@@ -1,0 +1,97 @@
+$def with()
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test</title>
+    <link rel="shortcut icon" href="/static/images/icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/static/styles/font.css">
+    <link rel="stylesheet" href="/static/styles/product/sign.css">
+    
+    <link rel="stylesheet" href="/static/styles/home/style.css">
+    <script src="/static/scripts/home/jquery-1.12.3.min.js"></script>
+    
+    <script src="/static/scripts/product/scrollbar.js"></script>
+    <script src="/static/scripts/product/jquery.cookie.js"></script>
+    <script src="/static/scripts/product/sign.js"></script>
+
+</head>
+
+<body>
+<div id="faceBoxs">
+    <video id="faceMedia" src="/static/video/sign.mp4"></video>
+    <canvas id="faceCanvas" width="989" height="594"></canvas>
+    <div id="controlBox" style="display: none;">
+        <div id="controlBar">
+            <div id="progBtnBar"><span id="PreLoad"></span><span id="pregTimeBar" style="width: 12.4088%;"></span></div><span id="playBtn" class="icon-ion-ios-play"></span><span id="showTime"><b id="currTime">00:00:04</b> / <b id="totalTime">00:00:36</b></span><img id="faceLogo" class="Btn" src="/static/images/logo.png"><span id="FullScreen" class="icon-ion-arrow-expand Btn"></span>
+            <div id="volumeBox">
+                <div id="volumeBar">
+                    <div id="volumeMask"><span id="volume"><span id="volume2"></span></span>
+                    </div>
+                </div><span id="OpenVolBtn" class="icon-ion-android-volume-up Btn"></span></div>
+        </div>
+    </div><span id="addBtn" style="display: block; left: 22.6997%; top: 32.6599%;"></span>
+    <div id="mask" style="display: none;"></div>
+    <div id="eJectBox" style="">
+        <div class="eJectCloseBox"><span class="eJectClose">关闭</span></div><img class="eJectImg" src="/static/images/bg_img.png">
+        <div class="eJectRight"><span class="eJectTitle"></span>
+            <p class="eJectContent ps-container">
+                <div class="ps-scrollbar-x-rail" style="width: 0px; display: none; left: 0px;">
+                    <div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div>
+                </div>
+                <div class="ps-scrollbar-y-rail" style="top: 0px; height: 150px; display: none;">
+                    <div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div>
+                </div>
+            </p><a href="" class="eJectJump" target="_blank">查看更多</a></div>
+    </div>
+    <div id="panelBox" style="display: none;"><span class="close">关闭</span><span class="existing">素材库</span><span class="handadd selected">手动添加</span>
+        <div id="showBox">
+            <table class="playTable" cellspacing="0" cellpadding="0" border="0">
+                <tbody>
+                    <tr style="height:40px;">
+                        <td><i class="big">•</i> 标题：</td>
+                        <td style="position:relative">
+                            <input class="borderStyle title" type="text" maxlength="15" placeholder="标题内容不超过15字 (必填)">
+                            <ul id="productType"><span style="height: 12px;line-height: 10px;position: absolute;text-align: right;top: 10px;width: 16px;">∨</span>
+                                <li data-type="1" class="chekcLi">音乐</li>
+                                <li data-type="2">人物</li>
+                                <li data-type="3">品牌</li>
+                                <li data-type="4">道具</li>
+                                <li data-type="5">话题</li>
+                                <li data-type="6">行为</li>
+                            </ul><span class="source">素材库</span></td>
+                    </tr>
+                    <tr style="height:40px;">
+                        <td><i class="big">•</i> 链接：</td>
+                        <td>
+                            <input class="borderStyle url" type="url" placeholder="请添加有效http链接 (必填)">
+                        </td>
+                    </tr>
+                    <tr style="height:40px;">
+                        <td>时长：</td>
+                        <td>
+                            <div class="inputBox">
+                                <input class="borderStyle length" type="text" maxlength="1" value="3"><span class="elem">秒（1-9秒）</span></div>
+                        </td>
+                    </tr>
+                    <tr style="height:90px;">
+                        <td colspan="2" style="text-align: center; width: 100%;">
+                            <label for="imgfile" style="display: inline-block"><img class="borderStyle file" src="/static/images/img2.jpg" alt="">
+                                <input type="file" id="imgfile">
+                            </label>
+                            <textarea class="borderStyle desc" maxlength="500" placeholder="描述信息不超过500字"></textarea>
+                        </td>
+                    </tr>
+                    <tr style="height:40px;">
+                        <td colspan="2" style="text-align:center;">
+                            <button id="submit">确定</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
