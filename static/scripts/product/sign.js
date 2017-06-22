@@ -139,8 +139,10 @@
 
 	//获取已经标记的广告列表
 	play.getData = function(){
+		var tmpurl = window.location.pathname;
+		var id = tmpurl.split('/')[2];
 
-		$.post('/sign/select-play-data',function(data){
+		$.post('/sign/'+id+'/select-play-data',function(data){
 
 			play.ads = data;
 
@@ -756,7 +758,9 @@
 
 				};
 
-				$.post('/sign/insert-play-data',data,function(data){
+				var tmpurl = window.location.pathname;
+		        var id = tmpurl.split('/')[2];
+				$.post('/sign/'+id+'/insert-play-data',data,function(data){
 
 					if(data){
 

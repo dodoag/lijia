@@ -13,6 +13,8 @@ urls = (
     '/AddUser',             pre_fix + 'todo.AddUser',
     '/Admin',               pre_fix + 'todo.Admin',
     '/Login',               pre_fix + 'todo.Login',
-    '/sign',               pre_fix + 'todo.Sign',
+    '/sign/(\d+)',          pre_fix + 'todo.Sign',
+    '/sign/(\d+)/insert-play-data',          pre_fix + 'todo.Insert_play_data',
+    '/sign/(\d+)/select-play-data',          pre_fix + 'todo.Select_play_data',
 
 )
