@@ -3,6 +3,7 @@
 import web
 from config import settings
 from datetime import datetime
+import random
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -24,11 +25,24 @@ def get_by_id(id):
 class New:
 
     def POST(self):
-        i = web.input()
-        title = i['title']
+        x = web.input(fileUpload={})
+        print x.keys()
+        title = x['title']
+        f = x['fileUpload']
+
+        print f.filename
+        nowTime=datetime.now().strftime("%Y%m%d%H%M%S")
+        randomNum=random.randint(0,100)
+        if randomNum<=10:
+            randomNum=str(0)+str(randomNum);  
+        uniqueNum=str(nowTime)+str(randomNum);
+        tempf = open('static/video/%s.mp4'%uniqueNum,'wb')
+        tempf.write(f.value)
+        tempf.close()
+
         if not title:
             return render.error('标题是必须的', None)
-        db.insert(tb, title=title, post_date=datetime.now())
+        db.insert(video, name=title, path='/static/video/%s.mp4'%uniqueNum)
         raise web.seeother('/')
 
 
@@ -88,9 +102,12 @@ class Index:
 
 class Sign:
 
-    def GET(self):
-        return render.sign()
+    def GET(self, id):
+        v = get_by_id(id)
+        return render.sign(v)
 
+class Insert_play_data:
+    def GET(self, id):
 
 class AddUser:
 

@@ -1,8 +1,8 @@
-$def with()
+$def with(video)
 $:render.header()
 
 <div id="faceBoxs" class="main">
-    <video id="faceMedia" src="/static/video/sign.mp4"></video>
+    <video id="faceMedia" src="$video.path"></video>
     <canvas id="faceCanvas" width="989" height="594"></canvas>
     <div id="controlBox" style="display: none;">
         <div id="controlBar">
