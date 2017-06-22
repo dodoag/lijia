@@ -11,11 +11,12 @@ render = settings.render
 db = settings.db
 tb = 'todo'
 user='user'
+video = 'video'
 
 
 
 def get_by_id(id):
-    s = db.select(tb, where='id=$id', vars=locals())
+    s = db.select(video, where='id=$id', vars=locals())
     if not s:
         return False
     return s[0]
@@ -74,17 +75,16 @@ class Delete:
         todo = get_by_id(id)
         if not todo:
             return render.error('没找到这条记录', None)
-        db.delete(tb, where='id=$id', vars=locals())
+        db.delete(video, where='id=$id', vars=locals())
         return render.error('删除成功！', '/')
 
 
 class Index:
 
     def GET(self):
-        todos1 = db.select(tb, order='finished asc, id asc')
-        todos2 = db.select(tb, order='finished asc, id asc')
+        videos = db.select(video, order='id asc')
 
-        return render.index(todos1,todos2)
+        return render.index(videos)
 
 class Sign:
 

@@ -342,7 +342,7 @@ Mobile style's
 			.about_bottom ul li span {width:100%;float:left;font-size:12px;margin-top:10px;}
 			.about_bottom ul li span a {color:#d0dfff;}
 			.text_tip {font-size:16px;width:100%;float:left;border-bottom:1px solid #7fa0ff;line-height:30px;color:#fff;}
-			.main {width:1180px;margin:0 auto;}
+			.main {width:95%;margin:0 auto;}
 			.main_left {width:50%;float:left;text-align:right;}
 			.main_left img {margin-right:20px;}
 			.main_right {width:50%;float:right;}
