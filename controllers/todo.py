@@ -5,6 +5,7 @@ from config import settings
 from datetime import datetime
 import random
 import sys
+import json
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -13,6 +14,7 @@ db = settings.db
 tb = 'todo'
 user='user'
 video = 'video'
+play = 'play'
 
 
 
@@ -21,6 +23,12 @@ def get_by_id(id):
     if not s:
         return False
     return s[0]
+
+def get_plays_by_id(id):
+    s = db.select(play, where='vid=$id', vars=locals())
+    if not s:
+        return False
+    return s
 
 class New:
 
@@ -107,7 +115,36 @@ class Sign:
         return render.sign(v)
 
 class Insert_play_data:
+    def POST(self, id):
+        data = web.data()
+        play = json.loads(data)
+
+        vid = id
+        type = play['type']
+        length = play['length']
+        time = play['time']
+        title = play['title']
+        url = play['url']
+        desc = play['desc']
+        topY = play['topY']
+        leftX = play['leftX']
+        result = db.insert(play, vid=vid, type=type, length=length, 
+                           time=time, title=title, url=url, desc=desc,
+                           topY=topY, leftX=leftX)
+        if result:
+            return True
+        else:
+            return False
+
+
+class Select_play_data:
     def GET(self, id):
+        plays = get_plays_by_id(id)
+        if plays:
+            return json.dumps(plays)
+        else:
+            return json.dumps([])
+
 
 class AddUser:
 
