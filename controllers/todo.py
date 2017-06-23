@@ -14,7 +14,7 @@ db = settings.db
 tb = 'todo'
 user='user'
 video = 'video'
-play = 'play'
+playdb = 'play'
 
 
 
@@ -25,7 +25,7 @@ def get_by_id(id):
     return s[0]
 
 def get_plays_by_id(id):
-    s = db.select(play, where='vid=$id', vars=locals())
+    s = db.select(playdb, where='vid=$id', vars=locals())
     if not s:
         return False
     return s
@@ -116,30 +116,39 @@ class Sign:
 
 class Insert_play_data:
     def POST(self, id):
-        data = web.data()
-        play = json.loads(data)
+        play = web.input()
 
-        vid = id
-        type = play['type']
-        length = play['length']
-        time = play['time']
+        vid = int(id)
+        t = int(play['type'])
+        length = int(play['length'])
+        time = float(play['time'])
         title = play['title']
-        url = play['url']
+        url = play['url'][7:]
         desc = play['desc']
-        topY = play['topY']
-        leftX = play['leftX']
-        result = db.insert(play, vid=vid, type=type, length=length, 
-                           time=time, title=title, url=url, desc=desc,
+        topY = play['topY'][:-1]
+        leftX = play['leftX'][:-1]
+        print topY,leftX
+        result = db.insert(playdb, vid=vid, type=t, length=length, 
+                           time=time, title=title, url=url, des=desc,
                            topY=topY, leftX=leftX)
         if result:
-            return True
+            return 'true'
         else:
-            return False
+            return 'false'
 
 
 class Select_play_data:
-    def GET(self, id):
+    def POST(self, id):
         plays = get_plays_by_id(id)
+        plays = list(plays)
+        for p in plays:
+            p['topY'] = '%.14f%%'%float(p['topY'])
+            p['leftX'] = '%.14f%%'%float(p['leftX'])
+            p['url'] = 'http://%s'%p['url']
+            p['desc'] = p['des']
+
+        result = json.dumps(plays)
+        print result
         if plays:
             return json.dumps(plays)
         else:
