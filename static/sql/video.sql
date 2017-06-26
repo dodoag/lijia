@@ -13,10 +13,10 @@ CREATE TABLE `play` (
   `vid` int(11) NOT NULL,
   `type` int(11) NOT NULL,
   `length` int(11) NOT NULL,
-  `time` int(11) NOT NULL,
+  `time` float NOT NULL,
   `title` varchar(50) NOT NULL,
   `url` varchar(50) NOT NULL,
-  `desc` varchar(50) NOT NULL,
+  `des` varchar(50) NOT NULL,
   `topY` varchar(50) NOT NULL,
   `leftX` varchar(50) NOT NULL,
   PRIMARY KEY  (`id`)
