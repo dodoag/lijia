@@ -6,6 +6,8 @@ from datetime import datetime
 import random
 import sys
 import json
+import os
+
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -94,10 +96,14 @@ class Edit:
 class Delete:
 
     def GET(self, id):
-        todo = get_by_id(id)
-        if not todo:
+        v = get_by_id(id)
+        if not v:
             return render.error('没找到这条记录', None)
+
+        print v['path']
+        os.remove('./%s'%v['path'])
         db.delete(video, where='id=$id', vars=locals())
+        db.delete(playdb, where='vid=$id', vars=locals())
         return render.error('删除成功！', '/')
 
 
@@ -154,6 +160,10 @@ class Select_play_data:
         else:
             return json.dumps([])
 
+class Clear:
+    def POST(self,id):
+        db.delete(playdb, where='vid=$id', vars=locals())
+        return render.error('删除成功！', '/sign')
 
 class AddUser:
 
