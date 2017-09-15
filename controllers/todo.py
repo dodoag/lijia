@@ -146,6 +146,9 @@ class Insert_play_data:
 class Select_play_data:
     def POST(self, id):
         plays = get_plays_by_id(id)
+        if not plays:
+            return json.dumps([])
+
         plays = list(plays)
         for p in plays:
             p['topY'] = '%.14f%%'%float(p['topY'])
@@ -157,6 +160,29 @@ class Select_play_data:
         print result
         if plays:
             return json.dumps(plays)
+        else:
+            return json.dumps([])
+
+class Select_index_data:
+    def POST(self, id):
+        plays = get_plays_by_id(id)
+        play = web.input()
+        ind = int(play['index'])
+
+        if not plays:
+            return json.dumps([])
+
+        plays = list(plays)
+        for p in plays:
+            p['topY'] = '%.14f%%'%float(p['topY'])
+            p['leftX'] = '%.14f%%'%float(p['leftX'])
+            p['url'] = 'http://%s'%p['url']
+            p['desc'] = p['des']
+
+        result = json.dumps(plays[ind])
+        print result
+        if plays:
+            return result
         else:
             return json.dumps([])
 

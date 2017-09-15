@@ -874,10 +874,12 @@
 			click : function(){
 
 				var index = $(this).attr('data-index');
+                var tmpurl = window.location.pathname;
+                var id = tmpurl.split('/')[2];
 
 				play.media.pause();
 
-				$.post('/sign/select-index-data',{index:index},function(data){
+				$.post('/sign/'+id+'/select-index-data',{index:index},function(data){
 
 					if(data){
 
