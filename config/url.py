@@ -5,6 +5,7 @@ pre_fix = 'controllers.'
 
 urls = (
     '/',                    pre_fix + 'todo.Index',
+    '/admin',                    pre_fix + 'todo.Admin',
     '/todo/new',            pre_fix + 'todo.New',
     '/todo/(\d+)',          pre_fix + 'todo.View',
     '/todo/(\d+)/edit',     pre_fix + 'todo.Edit',
@@ -14,6 +15,7 @@ urls = (
     '/Admin',               pre_fix + 'todo.Admin',
     '/Login',               pre_fix + 'todo.Login',
     '/sign/(\d+)',          pre_fix + 'todo.Sign',
+    '/sign/(\d+)/read',          pre_fix + 'todo.Sign_read',
     '/sign/(\d+)/insert-play-data',          pre_fix + 'todo.Insert_play_data',
     '/sign/(\d+)/select-play-data',          pre_fix + 'todo.Select_play_data',
     '/sign/(\d+)/select-index-data',          pre_fix + 'todo.Select_index_data',

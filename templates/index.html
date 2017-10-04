@@ -10,23 +10,14 @@ $:render.header()
                         <li>
                         <i class="icon-question-sign"></i>
                         &nbsp;
-                        <a href="/sign/$v.id">$v.name</a>
+                        <a href="/sign/$v.id/read">$v.name</a>
                         &nbsp;
-                        <a href="/todo/$v.id/delete" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a>
                         </li>
                 </ul>
 
             </div>
             <hr />
             <hr />
-            <p>加一条什么的。。。<img src="/static/images/face/2.gif" /></p>
-            <div class="box">
-                <form action="/todo/new" method="post" name="form" enctype="multipart/form-data">
-                    <input type="file" name="fileUpload" />
-                    <textarea name="title" placeholder="写点什么吧。。。"></textarea>
-                    <p style="text-align:right;margin-right:12px"><input type="submit" class="submit btn btn-primary" value="加上去" /></p>
-                </form>
-            </div>
 
         </div>
 

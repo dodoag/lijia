@@ -120,6 +120,12 @@ class Sign:
         v = get_by_id(id)
         return render.sign(v)
 
+class Sign_read:
+
+    def GET(self, id):
+        v = get_by_id(id)
+        return render.sign_read(v)
+
 class Insert_play_data:
     def POST(self, id):
         play = web.input()
@@ -193,25 +199,28 @@ class Clear:
 
 class AddUser:
 
-    def GET():
+    def GET(self):
         return render.adduser()
 
-    def POST():
+    def POST(self):
         pass
 
 class Login:
 
-    def GET():
+    def GET(self):
         pass
 
-    def POST():
+    def POST(self):
         pass
 
 
 class Admin:
 
-    def GET():
+    def GET(self):
+        videos = db.select(video, order='id asc')
+
+        return render.admin(videos)
         pass
 
-    def POST():
+    def POST(self):
         pass
