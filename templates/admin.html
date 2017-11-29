@@ -1,12 +1,13 @@
-$def with(videos)
+$def with(videos_common, videos_grade, videos_question, videos_viewonly)
+
 $:render.header()
 
         <div class="main">
-            <p>videos</p>
+            <p>video common</p>
             <div class="box todos">
                 
                 <ul>
-                    $for v in videos:
+                    $for v in videos_common:
                         <li>
                         <i class="icon-question-sign"></i>
                         &nbsp;
@@ -19,6 +20,61 @@ $:render.header()
             </div>
             <hr />
             <hr />
+
+            <p>video grade everywhere</p>
+            <div class="box todos">
+                
+                <ul>
+                    $for v in videos_grade:
+                        <li>
+                        <i class="icon-question-sign"></i>
+                        &nbsp;
+                        <a href="/sign/$v.id">$v.name</a>
+                        &nbsp;
+                        <a href="/todo/$v.id/delete" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a>
+                        </li>
+                </ul>
+
+            </div>
+            <hr />
+            <hr />
+
+            <p>video with question</p>
+            <div class="box todos">
+                
+                <ul>
+                    $for v in videos_question:
+                        <li>
+                        <i class="icon-question-sign"></i>
+                        &nbsp;
+                        <a href="/sign/$v.id">$v.name</a>
+                        &nbsp;
+                        <a href="/todo/$v.id/delete" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a>
+                        </li>
+                </ul>
+
+            </div>
+            <hr />
+            <hr />
+
+            <p>video viewonly</p>
+            <div class="box todos">
+                
+                <ul>
+                    $for v in videos_viewonly:
+                        <li>
+                        <i class="icon-question-sign"></i>
+                        &nbsp;
+                        <a href="/sign/$v.id">$v.name</a>
+                        &nbsp;
+                        <a href="/todo/$v.id/delete" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a>
+                        </li>
+                </ul>
+
+            </div>
+            <hr />
+            <hr />
+
             <p>加一条什么的。。。<img src="/static/images/face/2.gif" /></p>
             <div class="box">
                 <form action="/todo/new" method="post" name="form" enctype="multipart/form-data">

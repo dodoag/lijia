@@ -39,6 +39,7 @@ class New:
         print x.keys()
         title = x['title']
         f = x['fileUpload']
+        t = 1
 
         print f.filename
         nowTime=datetime.now().strftime("%Y%m%d%H%M%S")
@@ -52,7 +53,7 @@ class New:
 
         if not title:
             return render.error('标题是必须的', None)
-        db.insert(video, name=title, path='/static/video/%s.mp4'%uniqueNum)
+        db.insert(video, type=t, name=title, path='/static/video/%s.mp4'%uniqueNum)
         raise web.seeother('/')
 
 
@@ -110,9 +111,12 @@ class Delete:
 class Index:
 
     def GET(self):
-        videos = db.select(video, order='id asc')
+        videos1 = db.select(video, where='type=1',  order='id asc')
+        videos2 = db.select(video, where='type=2',  order='id asc')
+        videos3 = db.select(video, where='type=3',  order='id asc')
+        videos4 = db.select(video, where='type=4',  order='id asc')
 
-        return render.index(videos)
+        return render.index(videos1,videos2,videos3,videos4)
 
 class Sign:
 
@@ -173,6 +177,7 @@ class Select_index_data:
     def POST(self, id):
         plays = get_plays_by_id(id)
         play = web.input()
+        print play
         ind = int(play['index'])
 
         if not plays:
@@ -217,9 +222,12 @@ class Login:
 class Admin:
 
     def GET(self):
-        videos = db.select(video, order='id asc')
+        videos1 = db.select(video, where='type=1',  order='id asc')
+        videos2 = db.select(video, where='type=2',  order='id asc')
+        videos3 = db.select(video, where='type=3',  order='id asc')
+        videos4 = db.select(video, where='type=4',  order='id asc')
 
-        return render.admin(videos)
+        return render.admin(videos1,videos2,videos3,videos4)
         pass
 
     def POST(self):
