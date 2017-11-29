@@ -39,7 +39,8 @@ class New:
         print x.keys()
         title = x['title']
         f = x['fileUpload']
-        t = 1
+        t = x['type']
+        print t
 
         print f.filename
         nowTime=datetime.now().strftime("%Y%m%d%H%M%S")
@@ -54,7 +55,7 @@ class New:
         if not title:
             return render.error('标题是必须的', None)
         db.insert(video, type=t, name=title, path='/static/video/%s.mp4'%uniqueNum)
-        raise web.seeother('/')
+        raise web.seeother('/admin')
 
 
 class Finish:
@@ -105,7 +106,7 @@ class Delete:
         os.remove('./%s'%v['path'])
         db.delete(video, where='id=$id', vars=locals())
         db.delete(playdb, where='vid=$id', vars=locals())
-        return render.error('删除成功！', '/')
+        return render.error('删除成功！', '/admin')
 
 
 class Index:
