@@ -1260,11 +1260,12 @@
 
 							}
 
-							console.log(val['desc']+':'+val['img']);
+							console.log(val['desc']+':'+val['img']+':'+key);
 
 							if(val['desc'] == '' && val['img'] == null){
+							//if(val['img'] == null){
 
-								var docu = "<a style='"+loca+";"+style+"' href='"+val['url']+"' class='adsTitle' target='_blank'>"+val['title']+"</a>";
+								var docu = "<a style='"+loca+";"+style+"' href='"+val['url']+"' data-index='"+key+"' class='adsTitle' target='_blank'>"+val['title']+"</a>";
 
 							} else {
 
@@ -1272,6 +1273,7 @@
 
 							}
 
+							// var docu = "<span style='"+loca+";"+style+"' class='adsTitle' data-index='"+key+"'>"+val['title']+"</span>";
 							var _div = "<div data-length='"+(val['length']+val['time'])+"' class='ads ads"+key+"' style='top:"+val['topY']+";"+loca+"'><span class='adsIcon' style='background:url(\"/static/images/signIcon"+val['type']+".png\") no-repeat 100% 100% / 100% 100%;'></span>"+docu+"</div>";
 
 							if($('.ads'+key).length < 1){
