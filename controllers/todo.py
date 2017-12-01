@@ -20,7 +20,7 @@ score = 'score'
 action = 'action'
 playdb = 'play'
 
-
+session = web.config._session
 
 def get_by_id(id):
     s = db.select(video, where='id=$id', vars=locals())
@@ -33,6 +33,12 @@ def get_plays_by_id(id):
     if not s:
         return False
     return s
+
+def get_user_by_name(name):
+    s = db.select(user, where='name=$name', vars=locals())
+    if not s:
+        return False
+    return s[0]
 
 class New:
 
@@ -114,12 +120,15 @@ class Delete:
 class Index:
 
     def GET(self):
-        videos1 = db.select(video, where='type=1',  order='id asc')
-        videos2 = db.select(video, where='type=2',  order='id asc')
-        videos3 = db.select(video, where='type=3',  order='id asc')
-        videos4 = db.select(video, where='type=4',  order='id asc')
+        if session.get('logged_in',False):
+            videos1 = db.select(video, where='type=1',  order='id asc')
+            videos2 = db.select(video, where='type=2',  order='id asc')
+            videos3 = db.select(video, where='type=3',  order='id asc')
+            videos4 = db.select(video, where='type=4',  order='id asc')
 
-        return render.index(videos1,videos2,videos3,videos4)
+            return render.index(videos1,videos2,videos3,videos4)
+        else:
+            raise web.seeother('/login')
 
 class Sign:
 
@@ -216,10 +225,32 @@ class AddUser:
 class Login:
 
     def GET(self):
+        return render.login()
         pass
 
     def POST(self):
-        pass
+        i = web.input()
+        username = i.get('username')
+        passwd = i.get('passwd')
+        print username,passwd
+
+        result = get_user_by_name(username)
+        print result and result['pwd'] == passwd
+        if result and result['pwd'] == passwd:
+            print "Login success"
+            session.logged_in = True
+            session.admin = False
+            print session.get('logged_in',False)
+            print session.get('admin',False)
+
+            web.setcookie('userid',result['id'], 60)
+            if result['admin'] == u'1':
+                session.admin = True
+                raise web.seeother('/admin')
+            else:
+                raise web.seeother('/')
+        else:
+            return render.login()
 
 class Score:
 
@@ -267,6 +298,13 @@ class Action:
 class Admin:
 
     def GET(self):
+        print session.get('logged_in',False)
+        print session.get('admin',False)
+        if not session.get('logged_in',False):
+            raise web.seeother('/login')
+        if not session.get('admin',False):
+            raise web.seeother('/')
+
         videos1 = db.select(video, where='type=1',  order='id asc')
         videos2 = db.select(video, where='type=2',  order='id asc')
         videos3 = db.select(video, where='type=3',  order='id asc')
@@ -277,3 +315,4 @@ class Admin:
 
     def POST(self):
         pass
+

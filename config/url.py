@@ -6,6 +6,7 @@ pre_fix = 'controllers.'
 urls = (
     '/',                    pre_fix + 'todo.Index',
     '/admin',                    pre_fix + 'todo.Admin',
+    '/login',                    pre_fix + 'todo.Login',
     '/todo/new',            pre_fix + 'todo.New',
     '/todo/(\d+)',          pre_fix + 'todo.View',
     '/todo/(\d+)/edit',     pre_fix + 'todo.Edit',

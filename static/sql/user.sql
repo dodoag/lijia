@@ -6,3 +6,5 @@ CREATE TABLE `user` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
+INSERT INTO `user` VALUES ('1','admin', 'admin', '1');
+INSERT INTO `user` VALUES ('2','user', 'user', '0');
