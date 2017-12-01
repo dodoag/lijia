@@ -523,6 +523,8 @@
 		$( '#faceCanvas,#controlBox' ).bind('mousemove', function(e){
 
 			play.imouse = true;
+			play.myX = e.pageX;
+			play.myY = e.pageY;
 
 			if ( play.firstPlay && !play.start ) {
 
@@ -1031,8 +1033,7 @@
 				if(vtype == "4"){
 			    	var tmpurl = window.location.pathname;
 			        var id = tmpurl.split('/')[2];
-			        var mousePos = mouseCoords(window.event); 
-			        var action = "mouse:"+mousePos.x+":"+mousePos.y
+			        var action = "mouse:"+play.myX+":"+play.myY
 			        $.post('/sign/'+id+'/action',{action:action},function(data){},"json");
 		    	}
 
@@ -1461,4 +1462,6 @@ $(function() {
 	if(vtype == "2"){
 		$('#rate-bar').css("display","block")
 	}
+
 });
+
