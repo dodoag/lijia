@@ -74,6 +74,25 @@
 		play.boxsH = play.boxs.clientHeight;//盒子高度
 
 		play.media = $('#faceMedia').get(0);//视频媒体
+		play.media.onplay = function() {
+			var vtype = $("#type").text();
+			if(vtype == "4"){
+		    	var tmpurl = window.location.pathname;
+		        var id = tmpurl.split('/')[2];
+		        var action = "video start"
+		        $.post('/sign/'+id+'/action',{action:action},function(data){},"json");
+	    	}
+		};
+
+		play.media.onpause = function() {
+	    	var vtype = $("#type").text();
+			if(vtype == "4"){
+		    	var tmpurl = window.location.pathname;
+		        var id = tmpurl.split('/')[2];
+		        var action = "video pause"
+		        $.post('/sign/'+id+'/action',{action:action},function(data){},"json");
+	    	}
+		};
 
 		play.canvas = $('#faceCanvas').get(0);//播放视频的canvas
 
@@ -318,6 +337,13 @@
 		play.media.addEventListener("ended",function(){
 
 			console.log('已结束');
+			var vtype = $("#type").text();
+			if(vtype == "4"){
+		    	var tmpurl = window.location.pathname;
+		        var id = tmpurl.split('/')[2];
+		        var action = "video end"
+		        $.post('/sign/'+id+'/action',{action:action},function(data){},"json");
+	    	}
 
 			// play.drawImages("/static/images/end.jpg");
 
@@ -515,6 +541,14 @@
 		//添加按钮被单击
 		$( play.addBtn ).bind('click', function(e){
 
+			var vtype = $("#type").text();
+			if(vtype == "4"){
+		    	var tmpurl = window.location.pathname;
+		        var id = tmpurl.split('/')[2];
+		        var action = "click add btn"
+		        $.post('/sign/'+id+'/action',{action:action},function(data){},"json");
+	    	}
+
 			if( !navigator.cookieEnabled ){
 
 				alert('您的浏览器未开启cookie，无法进行标点！');
@@ -607,6 +641,14 @@
 		//关闭按钮
 		$('.close').bind('click', function(){
 
+			var vtype = $("#type").text();
+			if(vtype == "4"){
+		    	var tmpurl = window.location.pathname;
+		        var id = tmpurl.split('/')[2];
+		        var action = "click close btn"
+		        $.post('/sign/'+id+'/action',{action:action},function(data){},"json");
+	    	}
+
 			$('#mask').fadeOut(200);
 
 			$('#panelBox').slideUp(200);
@@ -692,6 +734,13 @@
 		//logo点击跳转
         $('body').delegate('#faceLogo',{
         	click : function(){
+        		var vtype = $("#type").text();
+				if(vtype == "4"){
+			    	var tmpurl = window.location.pathname;
+			        var id = tmpurl.split('/')[2];
+			        var action = "click face logo"
+			        $.post('/sign/'+id+'/action',{action:action},function(data){},"json");
+		    	}
         		window.location.href = '/home/login';
         	}
         });
@@ -857,7 +906,13 @@
 			mouseleave : function(){
 
 				$(this).find('.adsTitle').fadeOut(300);
-
+				var vtype = $("#type").text();
+				if(vtype == "4"){
+			    	var tmpurl = window.location.pathname;
+			        var id = tmpurl.split('/')[2];
+			        var action = "mouse leave title"
+			        $.post('/sign/'+id+'/action',{action:action},function(data){},"json");
+		    	}
 			}
 
 		});
@@ -865,7 +920,13 @@
 		$('body').delegate('.adsIcon',{
 
 			mouseover : function(){
-
+				var vtype = $("#type").text();
+				if(vtype == "4"){
+			    	var tmpurl = window.location.pathname;
+			        var id = tmpurl.split('/')[2];
+			        var action = "mouse over title"
+			        $.post('/sign/'+id+'/action',{action:action},function(data){},"json");
+		    	}
 				$(this).siblings('.adsTitle').fadeIn(300);
 
 			}
@@ -880,6 +941,12 @@
 				var index = $(this).attr('data-index');
                 var tmpurl = window.location.pathname;
                 var id = tmpurl.split('/')[2];
+
+                var vtype = $("#type").text();
+				if(vtype == "4"){
+			        var action = "mouse click title"
+			        $.post('/sign/'+id+'/action',{action:action},function(data){},"json");
+		    	}
 
 				play.media.pause();
 
@@ -916,6 +983,13 @@
 		});
 
 		$('.eJectClose').click(function(){
+			var vtype = $("#type").text();
+			if(vtype == "4"){
+		    	var tmpurl = window.location.pathname;
+		        var id = tmpurl.split('/')[2];
+		        var action = "close ads detail"
+		        $.post('/sign/'+id+'/action',{action:action},function(data){},"json");
+	    	}
 			$('.close').click();
 		});
 
@@ -953,6 +1027,14 @@
 				play.imouse = false;
 
 				console.log("鼠标移动过");
+				var vtype = $("#type").text();
+				if(vtype == "4"){
+			    	var tmpurl = window.location.pathname;
+			        var id = tmpurl.split('/')[2];
+			        var mousePos = mouseCoords(window.event); 
+			        var action = "mouse:"+mousePos.x+":"+mousePos.y
+			        $.post('/sign/'+id+'/action',{action:action},function(data){},"json");
+		    	}
 
 				if( !play.controlIsShow){//控制器是否显示
 
@@ -1346,7 +1428,6 @@
 
 		var _html = '<div id="controlBox"><div id="controlBar"><div id="progBtnBar"><span id="PreLoad"></span><span id="pregTimeBar"></span></div><span id="playBtn" class="icon-ion-ios-play Btn"></span><span id="showTime"><b id="currTime">00:00:00</b> / <b id="totalTime">00:00:00</b></span><img id="faceLogo" class="Btn" src="/static/images/logo.png"></img><span id="FullScreen" class="icon-ion-arrow-expand Btn"></span><div id="volumeBox"><div id="volumeBar"><div id="volumeMask"><span id="volume"><span id="volume2"></span></span></div></div><span id="OpenVolBtn" class="icon-ion-android-volume-up Btn"></span></div></div></div><span id="addBtn"></span><div id="mask"></div><div id="eJectBox"><div class="eJectCloseBox"><span class="eJectClose">关闭</span></div><img class="eJectImg" src="/static/images/bg_img.png" /><div class="eJectRight"><span class="eJectTitle"></span><p class="eJectContent"></p><a href="" class="eJectJump" target="_blank">查看更多</a></div></div><div id="panelBox"><span class="close">关闭</span><span class="existing">素材库</span><span class="handadd">手动添加</span><div id="showBox"></div></div>';
 		$('#faceBoxs').append(_html);
-
 		
 	};
 
@@ -1354,4 +1435,30 @@
 
 }();
 
+$(function() {
+	$('input[type="range"]').rangeslider({
 
+            // Deactivate the feature detection
+            polyfill: false,
+
+            // Callback function
+            onSlide: function(position, value) {
+                console.log('onSlide');
+                console.log('position: ' + position, 'value: ' + value);
+            },
+
+            // Callback function
+            onSlideEnd: function(position, value) {
+                console.log('onSlideEnd');
+                console.log('position: ' + position, 'value: ' + value);
+                var tmpurl = window.location.pathname;
+                var id = tmpurl.split('/')[2];
+                $.post('/sign/'+id+'/score',{score:value},function(data){},"json");
+            }
+        });
+
+	var vtype = $("#type").text();
+	if(vtype == "2"){
+		$('#rate-bar').css("display","block")
+	}
+});

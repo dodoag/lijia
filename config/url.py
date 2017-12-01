@@ -16,6 +16,8 @@ urls = (
     '/Login',               pre_fix + 'todo.Login',
     '/sign/(\d+)',          pre_fix + 'todo.Sign',
     '/sign/(\d+)/read',          pre_fix + 'todo.Sign_read',
+    '/sign/(\d+)/score',          pre_fix + 'todo.Score',
+    '/sign/(\d+)/action',          pre_fix + 'todo.Action',
     '/sign/(\d+)/insert-play-data',          pre_fix + 'todo.Insert_play_data',
     '/sign/(\d+)/select-play-data',          pre_fix + 'todo.Select_play_data',
     '/sign/(\d+)/select-index-data',          pre_fix + 'todo.Select_index_data',

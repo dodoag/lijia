@@ -16,6 +16,8 @@ db = settings.db
 tb = 'todo'
 user='user'
 video = 'video'
+score = 'score'
+action = 'action'
 playdb = 'play'
 
 
@@ -219,6 +221,48 @@ class Login:
     def POST(self):
         pass
 
+class Score:
+
+    def GET(self):
+        pass
+
+    def POST(self,id):
+        data = web.input()
+
+        vid = int(id)
+        uid = 0
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        value = float(data['score'])
+        result = db.insert(score, vid=vid, uid=uid, timestamp=timestamp, 
+                           value=value)
+        if result:
+            return 'true'
+        else:
+            return 'false'
+
+        pass
+
+class Action:
+
+    def GET(self):
+        pass
+
+    def POST(self,id):
+        data = web.input()
+
+        vid = int(id)
+        uid = 0
+        bid = 0
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        value = data['action']
+        result = db.insert(action, vid=vid, uid=uid, bid=bid, timestamp=timestamp, 
+                           action=value)
+        if result:
+            return 'true'
+        else:
+            return 'false'
+
+        pass
 
 class Admin:
 

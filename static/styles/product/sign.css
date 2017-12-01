@@ -24,6 +24,14 @@ li{list-style:none;}
 	display:none;
 }
 
+#rate-bar{
+        width:40%;
+        height:40px;
+        position:absolute;
+        bottom:0px;
+        margin: 0 30%;
+        display:none;
+}
 
 #controlBar{
         width:100%;
