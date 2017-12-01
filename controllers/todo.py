@@ -316,3 +316,18 @@ class Admin:
     def POST(self):
         pass
 
+class Manage:
+
+    def GET(self):
+        if not session.get('logged_in',False):
+            raise web.seeother('/login')
+        if not session.get('admin',False):
+            raise web.seeother('/')
+
+        users = db.select(user, order='id asc')
+
+        return render.manage(users)
+        pass
+
+    def POST(self):
+        pass
