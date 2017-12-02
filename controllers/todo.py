@@ -217,10 +217,31 @@ class Clear:
 class AddUser:
 
     def GET(self):
-        return render.adduser()
+        pass
+
+    def POST(self):
+        i = web.input()
+        username = i.get('username')
+        pwd = i.get('pwd')
+        result = get_user_by_name(username)
+        if not result:
+            db.insert(user, name=username, pwd=pwd, admin='0')
+        raise web.seeother('/manage')
+
+class DelUser:
+
+    def GET(self, id):
+        u = get_by_id(id)
+        if not u:
+            return false
+
+        db.delete(user, where='id=$id', vars=locals())
+        return render.error('删除成功！', '/manage')
+        pass
 
     def POST(self):
         pass
+
 
 class Login:
 

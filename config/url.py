@@ -12,6 +12,7 @@ urls = (
     '/todo/(\d+)',          pre_fix + 'todo.View',
     '/todo/(\d+)/edit',     pre_fix + 'todo.Edit',
     '/todo/(\d+)/delete',   pre_fix + 'todo.Delete',
+    '/user/(\d+)/delete',   pre_fix + 'todo.DelUser',
     '/todo/(\d+)/finish',   pre_fix + 'todo.Finish',
     '/AddUser',             pre_fix + 'todo.AddUser',
     '/Admin',               pre_fix + 'todo.Admin',

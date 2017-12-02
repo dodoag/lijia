@@ -1,0 +1,50 @@
+$def with(users)
+
+$:render.header()
+
+        <div class="main">
+            <form class="form-inline" action="/AddUser" method="post" name="form" enctype="multipart/form-data">
+                <div class="control-group">
+                <label class="control-label" for="username">username</label>
+                <div class="controls">
+                <input type="text" id="username" placeholder="username" name="username">
+                </div>
+                </div>
+                <div class="control-group">
+                <label class="control-label" for="inputPassword">Password</label>
+                <div class="controls">
+                <input type="password" id="inputPassword" placeholder="Password" name="pwd">
+                </div>
+                </div>
+                <div class="control-group">
+                <div class="controls">
+                <button type="submit" class="btn">submit</button>
+                </div>
+                </div>
+            </form>
+
+            <p>users</p>
+            <div class="box todos">
+                
+                <table width="30%">
+                    <tr>
+                        <th>name</th>
+                        <th>password</th>
+                        <th>action</th>
+                    </tr>
+                    $for u in users:
+                        <tr>
+                            <td>$u.name</td>
+                            <td>$u.pwd</td>
+                            <td><a href="/user/$u.id/delete" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a></td>
+                        </tr>
+                </table>
+
+            </div>
+            <hr />
+            <hr />
+
+
+        </div>
+
+$:render.foot()
