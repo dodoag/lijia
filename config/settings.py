@@ -2,7 +2,7 @@
 # coding: utf-8
 import web
 
-db = web.database(dbn='mysql', db='todo', user='root', pw='')
+db = web.database(host='127.0.0.1', dbn='mysql', db='todo', user='root', pw='root')
 
 render = web.template.render('templates/', cache=False)
 
@@ -10,9 +10,9 @@ web.config.debug = True
 
 config = web.storage(
     email='zgbdsg@gmail.com',
-    site_name = 'zhidian',
-    site_desc = '',
-    static = '/static',
+    site_name='zhidian',
+    site_desc='',
+    static='/static',
 )
 
 

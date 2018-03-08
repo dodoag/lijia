@@ -133,17 +133,27 @@ class Index:
 class Sign:
 
     def GET(self, id):
+        if not session.get('logged_in',False):
+            raise web.seeother('/login')
+        if not session.get('admin',False):
+            raise web.seeother('/')
         v = get_by_id(id)
         return render.sign(v)
 
 class Sign_read:
 
     def GET(self, id):
+        if not session.get('logged_in',False):
+            raise web.seeother('/login')
         v = get_by_id(id)
         return render.sign_read(v)
 
 class Insert_play_data:
     def POST(self, id):
+        if not session.get('logged_in',False):
+            raise web.seeother('/login')
+        if not session.get('admin',False):
+            raise web.seeother('/')
         play = web.input()
 
         vid = int(id)
@@ -220,6 +230,8 @@ class AddUser:
         pass
 
     def POST(self):
+        if not session.get('logged_in',False):
+            raise web.seeother('/login')
         i = web.input()
         username = i.get('username')
         pwd = i.get('pwd')
@@ -242,6 +254,11 @@ class DelUser:
     def POST(self):
         pass
 
+class Logout:
+
+    def GET(self):
+        session.kill()
+        return render.login()
 
 class Login:
 
@@ -259,6 +276,7 @@ class Login:
         print result and result['pwd'] == passwd
         if result and result['pwd'] == passwd:
             print "Login success"
+            session.uid = result['id']
             session.logged_in = True
             session.admin = False
             print session.get('logged_in',False)
@@ -279,10 +297,12 @@ class Score:
         pass
 
     def POST(self,id):
+        if not session.get('logged_in',False):
+            raise web.seeother('/login')
         data = web.input()
 
         vid = int(id)
-        uid = 0
+        uid = session.get('uid', 0)
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         value = float(data['score'])
         result = db.insert(score, vid=vid, uid=uid, timestamp=timestamp, 
@@ -300,10 +320,12 @@ class Action:
         pass
 
     def POST(self,id):
+        if not session.get('logged_in',False):
+            raise web.seeother('/login')
         data = web.input()
 
         vid = int(id)
-        uid = 0
+        uid = session.get('uid', 0)
         bid = 0
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         value = data['action']

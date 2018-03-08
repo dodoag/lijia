@@ -7,6 +7,7 @@ urls = (
     '/',                    pre_fix + 'todo.Index',
     '/admin',                    pre_fix + 'todo.Admin',
     '/login',                    pre_fix + 'todo.Login',
+    '/logout',                    pre_fix + 'todo.Logout',
     '/manage',                    pre_fix + 'todo.Manage',
     '/todo/new',            pre_fix + 'todo.New',
     '/todo/(\d+)',          pre_fix + 'todo.View',
