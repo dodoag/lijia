@@ -613,8 +613,13 @@ li{list-style:none;}
         margin-top:9px;
         color:#fff;
 }
-
+.adshow{
+        width: 30px;
+        height: 30px;
+        position: absolute;
+}
 .ads{
+        width: 30px;
         height: 30px;
         position: absolute;
 }

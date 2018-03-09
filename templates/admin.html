@@ -2,96 +2,97 @@ $def with(videos_common, videos_grade, videos_question, videos_viewonly)
 
 $:render.header()
 
-        <div class="main">
-            <p>video common</p>
-            <div class="box todos">
-                
-                <ul>
-                    $for v in videos_common:
-                        <li>
-                        <i class="icon-question-sign"></i>
-                        &nbsp;
-                        <a href="/sign/$v.id">$v.name</a>
-                        &nbsp;
-                        <a href="/todo/$v.id/delete" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a>
-                        </li>
-                </ul>
+<div class="main">
+    <p>video common</p>
+    <div class="box todos">
 
-            </div>
-            <hr />
-            <hr />
+        <ul>
+            $for v in videos_common:
+            <li>
+                <i class="icon-question-sign"></i>
+                &nbsp;
+                <a href="/sign/$v.id">$v.name</a>
+                &nbsp;
+                <a href="/todo/$v.id/delete" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a>
+            </li>
+        </ul>
 
-            <p>video grade everywhere</p>
-            <div class="box todos">
-                
-                <ul>
-                    $for v in videos_grade:
-                        <li>
-                        <i class="icon-question-sign"></i>
-                        &nbsp;
-                        <a href="/sign/$v.id">$v.name</a>
-                        &nbsp;
-                        <a href="/todo/$v.id/delete" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a>
-                        </li>
-                </ul>
+    </div>
+    <hr/>
+    <hr/>
 
-            </div>
-            <hr />
-            <hr />
+    <p>video grade everywhere</p>
+    <div class="box todos">
 
-            <p>video with question</p>
-            <div class="box todos">
-                
-                <ul>
-                    $for v in videos_question:
-                        <li>
-                        <i class="icon-question-sign"></i>
-                        &nbsp;
-                        <a href="/sign/$v.id">$v.name</a>
-                        &nbsp;
-                        <a href="/todo/$v.id/delete" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a>
-                        </li>
-                </ul>
+        <ul>
+            $for v in videos_grade:
+            <li>
+                <i class="icon-question-sign"></i>
+                &nbsp;
+                <a href="/sign/$v.id">$v.name</a>
+                &nbsp;
+                <a href="/todo/$v.id/delete" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a>
+            </li>
+        </ul>
 
-            </div>
-            <hr />
-            <hr />
+    </div>
+    <hr/>
+    <hr/>
 
-            <p>video viewonly</p>
-            <div class="box todos">
-                
-                <ul>
-                    $for v in videos_viewonly:
-                        <li>
-                        <i class="icon-question-sign"></i>
-                        &nbsp;
-                        <a href="/sign/$v.id">$v.name</a>
-                        &nbsp;
-                        <a href="/todo/$v.id/delete" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a>
-                        </li>
-                </ul>
+    <p>video with question</p>
+    <div class="box todos">
 
-            </div>
-            <hr />
-            <hr />
+        <ul>
+            $for v in videos_question:
+            <li>
+                <i class="icon-question-sign"></i>
+                &nbsp;
+                <a href="/sign/$v.id">$v.name</a>
+                &nbsp;
+                <a href="/todo/$v.id/delete" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a>
+            </li>
+        </ul>
 
-            <p>加一条什么的。。。<img src="/static/images/face/2.gif" /></p>
-            <div class="box">
-                <form action="/todo/new" method="post" name="form" enctype="multipart/form-data">
-                    
-                    <p>type</p>
-                    <input type= "radio" name="type" value='1' checked=checked>1
-                    <input type= "radio" name="type" value='2' >2
-                    <input type= "radio" name="type" value='3' >3
-                    <input type= "radio" name="type" value='4' >4
-                    <hr />
+    </div>
+    <hr/>
+    <hr/>
 
-                    <input type="file" name="fileUpload" />
-                    <textarea name="title" placeholder="写点什么吧。。。"></textarea>
-                    <p style="text-align:right;margin-right:12px"><input type="submit" class="submit btn btn-primary" value="加上去" /></p>
-                </form>
-            </div>
+    <p>video viewonly</p>
+    <div class="box todos">
 
-        </div>
+        <ul>
+            $for v in videos_viewonly:
+            <li>
+                <i class="icon-question-sign"></i>
+                &nbsp;
+                <a href="/sign/$v.id">$v.name</a>
+                &nbsp;
+                <a href="/todo/$v.id/delete" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a>
+            </li>
+        </ul>
+
+    </div>
+    <hr/>
+    <hr/>
+
+    <p>加一条什么的。。。<img src="/static/images/face/2.gif"/></p>
+    <div class="box">
+        <form action="/todo/new" method="post" name="form" enctype="multipart/form-data">
+
+            <p>type</p>
+            <input type="radio" name="type" value='1' checked=checked>1
+            <input type="radio" name="type" value='2'>2
+            <input type="radio" name="type" value='3'>3
+            <input type="radio" name="type" value='4'>4
+            <hr/>
+
+            <input type="file" name="fileUpload"/>
+            <textarea name="title" placeholder="写点什么吧。。。"></textarea>
+            <p style="text-align:right;margin-right:12px"><input type="submit" class="submit btn btn-primary"
+                                                                 value="加上去"/></p>
+        </form>
+    </div>
+
+</div>
 
 $:render.foot()

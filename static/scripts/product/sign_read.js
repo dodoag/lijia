@@ -347,9 +347,9 @@
 
 			// play.drawImages("/static/images/end.jpg");
 
-			$('.ads').fadeOut(100,function(){
+			$('.adshow').fadeOut(100,function(){
 
-				$('.ads').remove();
+				$('.adshow').remove();
 
 			});
 
@@ -385,7 +385,7 @@
 
 			var _time = Math.round(play.media.currentTime * 10 ) / 10;
 
-			$('.ads').each(function(i){
+			$('.adshow').each(function(i){
 
 				var _length = parseFloat($(this).attr('data-length'));
 
@@ -903,7 +903,7 @@
 
 		});
 
-		$('body').delegate('.ads',{
+		$('body').delegate('.adshow',{
 
 			mouseleave : function(){
 
@@ -1002,7 +1002,7 @@
 		var _time = Math.round(play.media.currentTime * 10 ) / 10;
 
 		//遍历过期的ads，并删除
-		$('.ads').each(function(i){
+		$('.adshow').each(function(i){
 
 			var _length = parseFloat($(this).attr('data-length')) + 1;
 
@@ -1319,7 +1319,6 @@
 
 					//遍历ads，并展现
 					$.each( play.ads, function( key, val ){
-
 						if(_time == val['time']){
 
 							// var _icon = '';
@@ -1352,7 +1351,8 @@
 
 							console.log(val['desc']+':'+val['img']+':'+key);
 
-							if(val['desc'] == '' && val['img'] == null){
+							if(val['desc'] == '' && val['img'] == undefined){
+							// if(val['desc'] == '' && val['img'] == null){
 							//if(val['img'] == null){
 
 								var docu = "<a style='"+loca+";"+style+"' href='"+val['url']+"' data-index='"+key+"' class='adsTitle' target='_blank'>"+val['title']+"</a>";
@@ -1364,15 +1364,15 @@
 							}
 
 							// var docu = "<span style='"+loca+";"+style+"' class='adsTitle' data-index='"+key+"'>"+val['title']+"</span>";
-							var _div = "<div data-length='"+(val['length']+val['time'])+"' class='ads ads"+key+"' style='top:"+val['topY']+";"+loca+"'><span class='adsIcon' style='background:url(\"/static/images/signIcon"+val['type']+".png\") no-repeat 100% 100% / 100% 100%;'></span>"+docu+"</div>";
+							var _div = "<div data-length='"+(val['length']+val['time'])+"' class='adshow adshow"+key+"' style='top:"+val['topY']+";"+loca+";'><span class='adsIcon' style='background:url(\"/static/images/signIcon"+val['type']+".png\") no-repeat 100% 100% / 100% 100%;'></span>"+docu+"</div>";
 
-							if($('.ads'+key).length < 1){
+							if($('.adshow'+key).length < 1){
 
 								$('#faceBoxs').append(_div);
 
 							};
 
-							$('.ads'+key).fadeIn(1000);
+							$('.adshow'+key).fadeIn(1000);
 							
 						};
 
