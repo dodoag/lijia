@@ -67,7 +67,7 @@ class New:
 
         if not title:
             return render.error('标题是必须的', None)
-        db.insert(video, type=t, name=title, path='/static/video/%s.mp4' % uniqueNum)
+        db.insert(video, type=t, name=title, path='/static/video/%s.mp4' % uniqueNum, isExp=0)
         raise web.seeother('/admin')
 
 
@@ -213,7 +213,7 @@ class Insert_question_data:
         leftX = play['leftX'][:-1]
         questions = json.loads(play["questions"])
         question = {}
-        for i in range(1,11):
+        for i in range(1, 11):
             tem = str(i)
             question.setdefault(tem, questions.get(tem, ""))
         result = db.insert(playdb, vid=vid, type=t, length=length,
@@ -229,6 +229,7 @@ class Insert_question_data:
             return 'true'
         else:
             return 'false'
+
 
 class Select_play_data:
     def POST(self, id):
