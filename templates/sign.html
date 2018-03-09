@@ -2,6 +2,7 @@ $def with(video)
 $:render.header()
 
 <div id="faceBoxs" class="main">
+    <input id = "videoId" style="display: none" value="$video.type"></input>
     <video id="faceMedia" src="$video.path"></video>
     <canvas id="faceCanvas" width="989" height="594"></canvas>
     <div id="controlBox" style="display: none;">
@@ -33,58 +34,126 @@ $:render.header()
             </div>
             </p><a href="" class="eJectJump" target="_blank">查看更多</a></div>
     </div>
-    <div id="panelBox" style="display: none;"><span class="close">关闭</span><span class="existing">素材库</span><span
-            class="handadd selected">手动添加</span>
-        <div id="showBox">
-            <table class="playTable" cellspacing="0" cellpadding="0" border="0">
-                <tbody>
-                <tr style="height:40px;">
-                    <td><i class="big">•</i> 标题：</td>
-                    <td style="position:relative">
-                        <input class="borderStyle title" type="text" maxlength="15" placeholder="标题内容不超过15字 (必填)">
-                        <ul id="productType"><span
-                                style="height: 12px;line-height: 10px;position: absolute;text-align: right;top: 10px;width: 16px;">∨</span>
-                            <li data-type="1" class="chekcLi">音乐</li>
-                            <li data-type="2">人物</li>
-                            <li data-type="3">品牌</li>
-                            <li data-type="4">道具</li>
-                            <li data-type="5">话题</li>
-                            <li data-type="6">行为</li>
-                        </ul>
-                        <span class="source">素材库</span></td>
-                </tr>
-                <tr style="height:40px;">
-                    <td><i class="big">•</i> 链接：</td>
-                    <td>
-                        <input class="borderStyle url" type="url" placeholder="请添加有效http链接 (必填)">
-                    </td>
-                </tr>
-                <tr style="height:40px;">
-                    <td>时长：</td>
-                    <td>
-                        <div class="inputBox">
-                            <input class="borderStyle length" type="text" maxlength="1" value="3"><span class="elem">秒（1-9秒）</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr style="height:90px;">
-                    <td colspan="2" style="text-align: center; width: 100%;">
-                        <label for="imgfile" style="display: inline-block"><img class="borderStyle file"
-                                                                                src="/static/images/img2.jpg" alt="">
-                            <input type="file" id="imgfile">
-                        </label>
-                        <textarea class="borderStyle desc" maxlength="500" placeholder="描述信息不超过500字"></textarea>
-                    </td>
-                </tr>
-                <tr style="height:40px;">
-                    <td colspan="2" style="text-align:center;">
-                        <button id="submit">确定</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+    $if video.type==3:
+        <div id="questionBox" style="display: none;"><span class="close">关闭</span><span class="existing">素材库</span><span
+                class="handadd selected">手动添加</span>
+            <div id="questionshowBox">
+                <table class="playTable" cellspacing="0" cellpadding="0" border="0">
+                    <tbody>
+                    <tr style="height:40px;">
+                        <td><i class="big">•</i> 标题：</td>
+                        <td style="position:relative">
+                            <input class="borderStyle title" type="text" maxlength="15" placeholder="标题内容不超过15字 (必填)">
+                            <ul class="productType"><span
+                                    style="height: 12px;line-height: 10px;position: absolute;text-align: right;top: 10px;width: 16px;">∨</span>
+                                <li data-type="1" class="chekcLi">音乐</li>
+                                <li data-type="2">人物</li>
+                                <li data-type="3">品牌</li>
+                                <li data-type="4">道具</li>
+                                <li data-type="5">话题</li>
+                                <li data-type="6">行为</li>
+                            </ul>
+                            <span class="source">素材库</span></td>
+                    </tr>
+                    <tr style="height:40px;">
+                        <td><i class="big">•</i> 链接：</td>
+                        <td>
+                            <input class="borderStyle url" type="url" placeholder="请添加有效http链接 (必填)">
+                        </td>
+                    </tr>
+                    <tr style="height:40px;">
+                        <td>时长：</td>
+                        <td>
+                            <div class="inputBox">
+                                <input class="borderStyle length" type="text" maxlength="1" value="3"><span class="elem">秒（1-9秒）</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr style="height:40px;">
+                        <td>desc：</td>
+                        <td>
+                            <textarea class="borderStyle" maxlength="500" placeholder="描述信息不超过500字"></textarea>
+                        </td>
+                    </tr>
+                    <tr style="height:40px;">
+                        <td>question：</td>
+                        <td>
+                            <div class="inputBox">
+                                <a class="btn questionAdd">+</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr style="height:40px;">
+                        <td></td>
+                        <td>
+                            <div class="inputBox">
+                                <input type="text" id="questionDetail" class="borderStyle" style="display: none" placeholder="input the question"/>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr style="height:40px;">
+                        <td colspan="2" style="text-align:center;">
+                            <button id="submit2">确定</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
+    $else:
+        <div id="panelBox" style="display: none;"><span class="close">关闭</span><span class="existing">素材库</span><span
+                class="handadd selected">手动添加</span>
+            <div id="showBox">
+                <table class="playTable" cellspacing="0" cellpadding="0" border="0">
+                    <tbody>
+                    <tr style="height:40px;">
+                        <td><i class="big">•</i> 标题：</td>
+                        <td style="position:relative">
+                            <input class="borderStyle title" type="text" maxlength="15" placeholder="标题内容不超过15字 (必填)">
+                            <ul class="productType"><span
+                                    style="height: 12px;line-height: 10px;position: absolute;text-align: right;top: 10px;width: 16px;">∨</span>
+                                <li data-type="1" class="chekcLi">音乐</li>
+                                <li data-type="2">人物</li>
+                                <li data-type="3">品牌</li>
+                                <li data-type="4">道具</li>
+                                <li data-type="5">话题</li>
+                                <li data-type="6">行为</li>
+                            </ul>
+                            <span class="source">素材库</span></td>
+                    </tr>
+                    <tr style="height:40px;">
+                        <td><i class="big">•</i> 链接：</td>
+                        <td>
+                            <input class="borderStyle url" type="url" placeholder="请添加有效http链接 (必填)">
+                        </td>
+                    </tr>
+                    <tr style="height:40px;">
+                        <td>时长：</td>
+                        <td>
+                            <div class="inputBox">
+                                <input class="borderStyle length" type="text" maxlength="1" value="3"><span class="elem">秒（1-9秒）</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr style="height:90px;">
+                        <td colspan="2" style="text-align: center; width: 100%;">
+                            <label for="imgfile" style="display: inline-block"><img class="borderStyle file"
+                                                                                    src="/static/images/img2.jpg" alt="">
+                                <input type="file" id="imgfile">
+                            </label>
+                            <textarea class="borderStyle desc" maxlength="500" placeholder="描述信息不超过500字"></textarea>
+                        </td>
+                    </tr>
+                    <tr style="height:40px;">
+                        <td colspan="2" style="text-align:center;">
+                            <button id="submit">确定</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
 </div>
 
 $:render.foot()

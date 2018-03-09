@@ -530,10 +530,13 @@
             } else {
 
                 $('#mask').fadeIn(200);
-
-                $('#panelBox').slideDown(200);
-
-                $('.handadd').click();
+                    console.log($("#videoId").val())
+                if($("#videoId").val()==3){
+                    $('#questionBox').slideDown(200);
+                }else {
+                    $('#panelBox').slideDown(200);
+                    $('.handadd').click();
+                }
 
             }
 
@@ -618,7 +621,7 @@
 
             $(this).addClass('selected').siblings().removeClass('selected');
 
-            var _html = '<table class="playTable" cellspacing="0" cellpadding="0" border="0"><tr style="height:40px;"><td><i class="big">•</i> 标题：</td><td style="position:relative"><input class="borderStyle title" type="text" maxlength="15" placeholder="标题内容不超过15字 (必填)" /><ul id="productType"><span style="height: 12px;line-height: 10px;position: absolute;text-align: right;top: 10px;width: 16px;">∨</span><li data-type="1" class="chekcLi">音乐</li><li data-type="2">人物</li><li data-type="3">品牌</li><li data-type="4">道具</li><li data-type="5">话题</li><li data-type="6">行为</li></ul><span class="source">素材库</span></td></tr><tr style="height:40px;"><td><i class="big">•</i> 链接：</td><td><input class="borderStyle url" type="url" placeholder="请添加有效http链接 (必填)"></td></tr><tr style="height:40px;"><td>时长：</td><td><div class="inputBox"><input class="borderStyle length" type="text" maxlength="1" value="3"><span class="elem">秒（1-9秒）</span></div></td></tr><tr style="height:90px;"><td colspan="2" style="text-align: center; width: 100%;"><label for="imgfile" style="display: inline-block"><img class="borderStyle file" src="/static/images/img2.jpg" alt=""><input type="file" id="imgfile"></label><textarea class="borderStyle desc" maxlength="500" placeholder="描述信息不超过500字"></textarea></td></tr><tr style="height:40px;"><td colspan="2" style="text-align:center;"><button id="submit">确定</button></td></tr></table>';
+            var _html = '<table class="playTable" cellspacing="0" cellpadding="0" border="0"><tr style="height:40px;"><td><i class="big">•</i> 标题：</td><td style="position:relative"><input class="borderStyle title" type="text" maxlength="15" placeholder="标题内容不超过15字 (必填)" /><ul class="productType"><span style="height: 12px;line-height: 10px;position: absolute;text-align: right;top: 10px;width: 16px;">∨</span><li data-type="1" class="chekcLi">音乐</li><li data-type="2">人物</li><li data-type="3">品牌</li><li data-type="4">道具</li><li data-type="5">话题</li><li data-type="6">行为</li></ul><span class="source">素材库</span></td></tr><tr style="height:40px;"><td><i class="big">•</i> 链接：</td><td><input class="borderStyle url" type="url" placeholder="请添加有效http链接 (必填)"></td></tr><tr style="height:40px;"><td>时长：</td><td><div class="inputBox"><input class="borderStyle length" type="text" maxlength="1" value="3"><span class="elem">秒（1-9秒）</span></div></td></tr><tr style="height:90px;"><td colspan="2" style="text-align: center; width: 100%;"><label for="imgfile" style="display: inline-block"><img class="borderStyle file" src="/static/images/img2.jpg" alt=""><input type="file" id="imgfile"></label><textarea class="borderStyle desc" maxlength="500" placeholder="描述信息不超过500字"></textarea></td></tr><tr style="height:40px;"><td colspan="2" style="text-align:center;"><button id="submit">确定</button></td></tr></table>';
 
             $('#showBox').empty().append(_html);
 
@@ -630,6 +633,8 @@
             $('#mask').fadeOut(200);
 
             $('#panelBox').slideUp(200);
+
+            $('#questionBox').slideUp(200);
 
             $('#eJectBox').slideUp(200);
 
@@ -644,7 +649,7 @@
         });
 
         //类型事件
-        $('body').delegate('#productType', {
+        $('body').delegate('.productType', {
 
             mouseover: function () {
 
@@ -660,7 +665,7 @@
         });
 
         //某个类型被点击
-        $('body').delegate('#productType li', {
+        $('body').delegate('.productType li', {
 
             click: function () {
 
@@ -671,7 +676,34 @@
             }
 
         });
-
+        //add question
+        $('body').delegate('.questionAdd', {
+            click: function () {
+                if($(".question").length<10){
+                    $(this).before("<a class=\"btn question "+(1+$(".question").length)+" style=\"margin:2px\">"+(1+$(".question").length)+"</a>")
+                    $(this).prev("a").click();
+                    console.log($(this).prev("a"));
+                }else{
+                    alert("only 10 questions");
+                }
+            }
+        });
+        //see question
+        $('body').delegate('.question', {
+            click: function () {
+                $('.question').removeClass("inedit");
+                $(this).addClass("inedit");
+                $('#questionDetail').val($(this).val());
+                $('#questionDetail').fadeIn(500);
+            }
+        });
+        //see question
+        $('body').delegate('#questionDetail', {
+            change: function () {
+                $('.question.inedit').val($(this).val());
+                console.log($('.question.inedit').val())
+            }
+        });
         //选择某个素材
         $('body').delegate('.person', {
             click: function () {
@@ -685,7 +717,7 @@
 
                         $('.handadd').addClass('selected').siblings().removeClass('selected');
 
-                        var _html = '<table class="playTable" cellspacing="0" cellpadding="0" border="0"><tr style="height:40px;"><td><i class="big">•</i> 标题：</td><td style="position:relative"><input class="borderStyle title" type="text" maxlength="15" value="' + data.title + '" placeholder="标题内容不超过15字 (必填)" /><ul id="productType"><span style="height: 12px;line-height: 10px;position: absolute;text-align: right;top: 10px;width: 16px;">∨</span><li data-type="1">音乐</li><li data-type="2">人物</li><li data-type="3">品牌</li><li data-type="4">道具</li><li data-type="5">话题</li><li data-type="6">行为</li></ul><span class="source">素材库</span></td></tr><tr style="height:40px;"><td><i class="big">•</i> 链接：</td><td><input class="borderStyle url" type="url" placeholder="请添加有效http链接 (必填)" value="' + data.url + '"></td></tr><tr style="height:40px;"><td>时长：</td><td><div class="inputBox"><input class="borderStyle length" type="text" maxlength="1" value="3"><span class="elem">秒（1-9秒）</span></div></td></tr><tr style="height:90px;"><td colspan="2" style="text-align: center; width: 100%;"><label for="imgfile" style="display: inline-block"><img class="borderStyle file" src="' + data.img + '" alt=""><input type="file" id="imgfile"></label><textarea class="borderStyle desc" maxlength="500" placeholder="描述信息不超过500字">' + data.desc + '</textarea></td></tr><tr style="height:40px;"><td colspan="2" style="text-align:center;"><button id="submit">确定</button></td></tr></table>';
+                        var _html = '<table class="playTable" cellspacing="0" cellpadding="0" border="0"><tr style="height:40px;"><td><i class="big">•</i> 标题：</td><td style="position:relative"><input class="borderStyle title" type="text" maxlength="15" value="' + data.title + '" placeholder="标题内容不超过15字 (必填)" /><ul class="productType"><span style="height: 12px;line-height: 10px;position: absolute;text-align: right;top: 10px;width: 16px;">∨</span><li data-type="1">音乐</li><li data-type="2">人物</li><li data-type="3">品牌</li><li data-type="4">道具</li><li data-type="5">话题</li><li data-type="6">行为</li></ul><span class="source">素材库</span></td></tr><tr style="height:40px;"><td><i class="big">•</i> 链接：</td><td><input class="borderStyle url" type="url" placeholder="请添加有效http链接 (必填)" value="' + data.url + '"></td></tr><tr style="height:40px;"><td>时长：</td><td><div class="inputBox"><input class="borderStyle length" type="text" maxlength="1" value="3"><span class="elem">秒（1-9秒）</span></div></td></tr><tr style="height:90px;"><td colspan="2" style="text-align: center; width: 100%;"><label for="imgfile" style="display: inline-block"><img class="borderStyle file" src="' + data.img + '" alt=""><input type="file" id="imgfile"></label><textarea class="borderStyle desc" maxlength="500" placeholder="描述信息不超过500字">' + data.desc + '</textarea></td></tr><tr style="height:40px;"><td colspan="2" style="text-align:center;"><button id="submit">确定</button></td></tr></table>';
 
                         $('#showBox').empty().append(_html);
 
@@ -809,7 +841,106 @@
             }
 
         });
+//提交按钮
+        $('body').delegate('#submit2', {
 
+            click: function () {
+
+                if (!play.isClick) {
+
+                    return false;
+
+                }
+                ;
+                var question={}
+                for(var i= 1;i<=10;i++){
+                    question[i]=$(".question."+i)?$(".question."+i).val():"";
+                }
+                console.log(question)
+                var data = {
+
+                        type: $.trim($('.chekcLi').attr('data-type')),//类型
+
+                        title: $.trim($('.title').val()),//标题
+
+                        length: parseInt($('.length').val()),//时长
+
+                        url: $.trim($('.url').val()),//http地址
+
+                        desc: $.trim($('.desc').val()),//描述
+
+                        questions:JSON.stringify(question),
+                        // questions:question,
+
+                        quesLen:$(".question").length,
+
+                        time: Math.round(play.media.currentTime * 10) / 10,//视频当前播放时间
+
+                        topY: play.calcY,//top值
+
+                        leftX: play.calcX//left值
+
+                    },
+                    len = data.desc.length;
+
+                console.log(data);
+
+                if (!data.title) {
+                    alert('标题填写有误，请重新填写！');
+                    $('.title').val('').focus();
+                    return false;
+                }
+
+                if (!data.length) {
+                    alert('时长填写有误，请重新填写！');
+                    $('.length').val('3').focus();
+                    return false;
+                } else {
+                    if (data.length > 10) {
+                        data.length = 10;
+                    }
+                    ;
+                }
+                ;
+
+                if (len > 500) {
+                    alert('抱歉，描述信息不能超过500字！');
+                    $('.desc').val(data.desc.substr(0, 500));
+                    return false;
+                }
+
+                if (!play.isUrl(data.url)) {
+
+                    alert('链接地址填写有误，请填写有效地址！');
+                    $('.url').val('').focus();
+                    return false;
+
+                }
+                ;
+
+                var tmpurl = window.location.pathname;
+                var id = tmpurl.split('/')[2];
+                $.post('/sign/' + id + '/insert-question-data', data, function (data) {
+
+                    if (data) {
+
+                        play.getData();
+
+                        $('#mask').fadeOut(200);
+
+                        $('#questionBox').slideUp(200);
+
+                        play.media.currentTime = play.media.currentTime - 0.2;
+
+                        play.media.play();
+
+                    }
+
+                }, "json");
+
+            }
+
+        });
         $('body').delegate('#imgfile', {
 
             change: function () {
@@ -1317,7 +1448,7 @@
                     if ($('.adshow' + key).length < 1) {
 
                         $('#faceBoxs').append(_div);
-
+                        console.log("--------------"+$("type").text());
                     }
                     ;
                     $('.adshow'+key).fadeIn(1000);

@@ -634,7 +634,7 @@
 
 			$(this).addClass('selected').siblings().removeClass('selected');
 
-			var _html = '<table class="playTable" cellspacing="0" cellpadding="0" border="0"><tr style="height:40px;"><td><i class="big">•</i> 标题：</td><td style="position:relative"><input class="borderStyle title" type="text" maxlength="15" placeholder="标题内容不超过15字 (必填)" /><ul id="productType"><span style="height: 12px;line-height: 10px;position: absolute;text-align: right;top: 10px;width: 16px;">∨</span><li data-type="1" class="chekcLi">音乐</li><li data-type="2">人物</li><li data-type="3">品牌</li><li data-type="4">道具</li><li data-type="5">话题</li><li data-type="6">行为</li></ul><span class="source">素材库</span></td></tr><tr style="height:40px;"><td><i class="big">•</i> 链接：</td><td><input class="borderStyle url" type="url" placeholder="请添加有效http链接 (必填)"></td></tr><tr style="height:40px;"><td>时长：</td><td><div class="inputBox"><input class="borderStyle length" type="text" maxlength="1" value="3"><span class="elem">秒（1-9秒）</span></div></td></tr><tr style="height:90px;"><td colspan="2" style="text-align: center; width: 100%;"><label for="imgfile" style="display: inline-block"><img class="borderStyle file" src="/static/images/img2.jpg" alt=""><input type="file" id="imgfile"></label><textarea class="borderStyle desc" maxlength="500" placeholder="描述信息不超过500字"></textarea></td></tr><tr style="height:40px;"><td colspan="2" style="text-align:center;"><button id="submit">确定</button></td></tr></table>';
+			var _html = '<table class="playTable" cellspacing="0" cellpadding="0" border="0"><tr style="height:40px;"><td><i class="big">•</i> 标题：</td><td style="position:relative"><input class="borderStyle title" type="text" maxlength="15" placeholder="标题内容不超过15字 (必填)" /><ul class="productType"><span style="height: 12px;line-height: 10px;position: absolute;text-align: right;top: 10px;width: 16px;">∨</span><li data-type="1" class="chekcLi">音乐</li><li data-type="2">人物</li><li data-type="3">品牌</li><li data-type="4">道具</li><li data-type="5">话题</li><li data-type="6">行为</li></ul><span class="source">素材库</span></td></tr><tr style="height:40px;"><td><i class="big">•</i> 链接：</td><td><input class="borderStyle url" type="url" placeholder="请添加有效http链接 (必填)"></td></tr><tr style="height:40px;"><td>时长：</td><td><div class="inputBox"><input class="borderStyle length" type="text" maxlength="1" value="3"><span class="elem">秒（1-9秒）</span></div></td></tr><tr style="height:90px;"><td colspan="2" style="text-align: center; width: 100%;"><label for="imgfile" style="display: inline-block"><img class="borderStyle file" src="/static/images/img2.jpg" alt=""><input type="file" id="imgfile"></label><textarea class="borderStyle desc" maxlength="500" placeholder="描述信息不超过500字"></textarea></td></tr><tr style="height:40px;"><td colspan="2" style="text-align:center;"><button id="submit">确定</button></td></tr></table>';
 
 			$('#showBox').empty().append(_html);
 
@@ -668,7 +668,7 @@
 		});
 
 		//类型事件
-		$('body').delegate('#productType',{
+		$('body').delegate('.productType',{
 
 			mouseover : function(){
 
@@ -684,7 +684,7 @@
 		});
 
 		//某个类型被点击
-		$('body').delegate('#productType li',{
+		$('body').delegate('.productType li',{
 
 			click : function(){
 
@@ -709,7 +709,7 @@
 
 						$('.handadd').addClass('selected').siblings().removeClass('selected');
 
-						var _html = '<table class="playTable" cellspacing="0" cellpadding="0" border="0"><tr style="height:40px;"><td><i class="big">•</i> 标题：</td><td style="position:relative"><input class="borderStyle title" type="text" maxlength="15" value="'+data.title+'" placeholder="标题内容不超过15字 (必填)" /><ul id="productType"><span style="height: 12px;line-height: 10px;position: absolute;text-align: right;top: 10px;width: 16px;">∨</span><li data-type="1">音乐</li><li data-type="2">人物</li><li data-type="3">品牌</li><li data-type="4">道具</li><li data-type="5">话题</li><li data-type="6">行为</li></ul><span class="source">素材库</span></td></tr><tr style="height:40px;"><td><i class="big">•</i> 链接：</td><td><input class="borderStyle url" type="url" placeholder="请添加有效http链接 (必填)" value="'+data.url+'"></td></tr><tr style="height:40px;"><td>时长：</td><td><div class="inputBox"><input class="borderStyle length" type="text" maxlength="1" value="3"><span class="elem">秒（1-9秒）</span></div></td></tr><tr style="height:90px;"><td colspan="2" style="text-align: center; width: 100%;"><label for="imgfile" style="display: inline-block"><img class="borderStyle file" src="'+data.img+'" alt=""><input type="file" id="imgfile"></label><textarea class="borderStyle desc" maxlength="500" placeholder="描述信息不超过500字">'+data.desc+'</textarea></td></tr><tr style="height:40px;"><td colspan="2" style="text-align:center;"><button id="submit">确定</button></td></tr></table>';
+						var _html = '<table class="playTable" cellspacing="0" cellpadding="0" border="0"><tr style="height:40px;"><td><i class="big">•</i> 标题：</td><td style="position:relative"><input class="borderStyle title" type="text" maxlength="15" value="'+data.title+'" placeholder="标题内容不超过15字 (必填)" /><ul class="productType"><span style="height: 12px;line-height: 10px;position: absolute;text-align: right;top: 10px;width: 16px;">∨</span><li data-type="1">音乐</li><li data-type="2">人物</li><li data-type="3">品牌</li><li data-type="4">道具</li><li data-type="5">话题</li><li data-type="6">行为</li></ul><span class="source">素材库</span></td></tr><tr style="height:40px;"><td><i class="big">•</i> 链接：</td><td><input class="borderStyle url" type="url" placeholder="请添加有效http链接 (必填)" value="'+data.url+'"></td></tr><tr style="height:40px;"><td>时长：</td><td><div class="inputBox"><input class="borderStyle length" type="text" maxlength="1" value="3"><span class="elem">秒（1-9秒）</span></div></td></tr><tr style="height:90px;"><td colspan="2" style="text-align: center; width: 100%;"><label for="imgfile" style="display: inline-block"><img class="borderStyle file" src="'+data.img+'" alt=""><input type="file" id="imgfile"></label><textarea class="borderStyle desc" maxlength="500" placeholder="描述信息不超过500字">'+data.desc+'</textarea></td></tr><tr style="height:40px;"><td colspan="2" style="text-align:center;"><button id="submit">确定</button></td></tr></table>';
 
 						$('#showBox').empty().append(_html);
 
@@ -1369,6 +1369,7 @@
 							if($('.adshow'+key).length < 1){
 
 								$('#faceBoxs').append(_div);
+                                console.log(val);
 
 							};
 

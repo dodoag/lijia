@@ -19,6 +19,7 @@ video = 'video'
 score = 'score'
 action = 'action'
 playdb = 'play'
+questiondb = 'question'
 
 session = web.config._session
 
@@ -136,6 +137,16 @@ class Index:
             raise web.seeother('/login')
 
 
+class Main:
+
+    def GET(self):
+        if session.get('logged_in', False):
+
+            return render.main()
+        else:
+            raise web.seeother('/login')
+
+
 class Sign:
 
     def GET(self, id):
@@ -182,6 +193,49 @@ class Insert_play_data:
         else:
             return 'false'
 
+
+class Insert_question_data:
+    def POST(self, id):
+        if not session.get('logged_in', False):
+            raise web.seeother('/login')
+        if not session.get('admin', False):
+            raise web.seeother('/')
+        play = web.input()
+        print(play.keys())
+        vid = int(id)
+        t = int(play['type'])
+        length = int(play['length'])
+        time = float(play['time'])
+        title = play['title']
+        url = play['url'][7:]
+        desc = play['desc']
+        topY = play['topY'][:-1]
+        leftX = play['leftX'][:-1]
+        quesLen = int(play['quesLen'])
+        questions = json.loads(play["questions"])
+        question = {}
+        for i in range(1,11):
+            tem = str(i)
+            question.setdefault(tem, questions.get(tem, ""))
+        print question["1"]
+        # question["2"] = ""
+        # print(question["2"])
+        # print(question["3"])
+
+        # print(len(question))
+        result = db.insert(playdb, vid=vid, type=t, length=length,
+                           time=time, title=title, url=url, des=desc,
+                           topY=topY, leftX=leftX)
+        print(result)
+        result1 = db.insert(questiondb, vid=vid, btnId=result, Q1=question["1"],
+                            Q2=question["2"], Q3=question["3"], Q4=question["4"],
+                            Q5=question["5"], Q6=question["6"], Q7=question["7"],
+                            Q8=question["8"], Q9=question["9"], Q10=question["10"])
+        print(result1)
+        if result1:
+            return 'true'
+        else:
+            return 'false'
 
 class Select_play_data:
     def POST(self, id):
@@ -250,6 +304,8 @@ class AddUser:
         if not result:
             db.insert(user, name=username, pwd=pwd, admin='0')
         raise web.seeother('/manage')
+
+
 class AddUsers:
 
     def GET(self):
@@ -260,13 +316,14 @@ class AddUsers:
         f = x['userfile']
         userlist = f.split("\r\n")
         print(len(userlist))
-        if len(userlist)>0:
+        if len(userlist) > 0:
             db.delete(user, where='admin=0', vars=locals())
         for item in userlist:
-            temp=item.split(",")
-            print(temp[0],temp[1],temp[2])
-            db.insert(user, name=temp[0],pwd=temp[1],admin=temp[2]);
+            temp = item.split(",")
+            print(temp[0], temp[1], temp[2])
+            db.insert(user, name=temp[0], pwd=temp[1], admin=temp[2]);
         raise web.seeother('/manage')
+
 
 class DelUser:
 
@@ -317,7 +374,7 @@ class Login:
                 session.admin = True
                 raise web.seeother('/admin')
             else:
-                raise web.seeother('/')
+                raise web.seeother('/main')
         else:
             return render.login()
 
@@ -408,6 +465,8 @@ class Manage:
 
     def POST(self):
         pass
+
+
 class Update_video_data:
     def POST(self):
         if not session.get('logged_in', False):
