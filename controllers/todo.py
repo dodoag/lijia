@@ -211,18 +211,11 @@ class Insert_question_data:
         desc = play['desc']
         topY = play['topY'][:-1]
         leftX = play['leftX'][:-1]
-        quesLen = int(play['quesLen'])
         questions = json.loads(play["questions"])
         question = {}
         for i in range(1,11):
             tem = str(i)
             question.setdefault(tem, questions.get(tem, ""))
-        print question["1"]
-        # question["2"] = ""
-        # print(question["2"])
-        # print(question["3"])
-
-        # print(len(question))
         result = db.insert(playdb, vid=vid, type=t, length=length,
                            time=time, title=title, url=url, des=desc,
                            topY=topY, leftX=leftX)
