@@ -141,8 +141,9 @@ class Main:
 
     def GET(self):
         if session.get('logged_in', False):
-
-            return render.main()
+            videos = db.select(video, where='isExp=1', order='id asc')
+            print(len(videos))
+            return render.main(videos)
         else:
             raise web.seeother('/login')
 
@@ -369,6 +370,7 @@ class Login:
                 raise web.seeother('/admin')
             else:
                 raise web.seeother('/main')
+                # raise web.seeother('/')
         else:
             return render.login()
 

@@ -1,24 +1,29 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : localhost
+Source Server Version : 50721
+Source Host           : localhost:3306
+Source Database       : todo
+
+Target Server Type    : MYSQL
+Target Server Version : 50721
+File Encoding         : 65001
+
+Date: 2018-03-09 22:49:51
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for video
+-- ----------------------------
+DROP TABLE IF EXISTS `video`;
 CREATE TABLE `video` (
-  `id` int(11) NOT NULL auto_increment,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` int(11) NOT NULL,
   `name` varchar(30) NOT NULL,
   `path` varchar(200) NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
-
-INSERT INTO `video` VALUES ('1','1', 'exmaple', '/static/video/sign.mp4');
-
-
-CREATE TABLE `play` (
-  `id` int(11) NOT NULL auto_increment,
-  `vid` int(11) NOT NULL,
-  `type` int(11) NOT NULL,
-  `length` int(11) NOT NULL,
-  `time` float NOT NULL,
-  `title` varchar(50) NOT NULL,
-  `url` varchar(50) NOT NULL,
-  `des` varchar(50) NOT NULL,
-  `topY` varchar(50) NOT NULL,
-  `leftX` varchar(50) NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+  `isExp` int(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;

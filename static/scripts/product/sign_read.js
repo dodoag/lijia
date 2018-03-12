@@ -1439,7 +1439,8 @@
 }();
 
 $(function() {
-	$('input[type="range"]').rangeslider({
+
+    $('input[type="range"]').rangeslider({
 
             // Deactivate the feature detection
             polyfill: false,
