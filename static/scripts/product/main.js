@@ -131,6 +131,8 @@ var plugin = function () {
 
         play.drawImages("/static/images/zd.jpg");
 
+        play.elmeEvent();
+        play.playEvent();
         play.getVideo();
         //IE下禁止选择
         document.body.onselectstart = document.body.ondrag = function () {
@@ -212,7 +214,7 @@ var plugin = function () {
 
             var _total = play.media.duration,
 
-                _currt = play.media.buffered.end(0),
+                _currt = play.media.buffered.length>0?play.media.buffered.end(0):0,
 
                 res = 100 * _currt / _total;
 
@@ -343,19 +345,20 @@ var plugin = function () {
             videoCount++;
             if (videoCount < videoT.length) {
                 $("#faceMedia").attr({"src": videoT[videoCount].path});
-                play.init();
+                play.media=$('#faceMedia').get(0);
+                play.getVideo();
                 play.media.play();
             } else {
                 videoCount = 0;
                 $("#faceMedia").attr({"src": videoT[videoCount].path});
-                play.init();
+                play.media = $('#faceMedia').get(0);
+                play.getVideo();
             }
             vtype = videoT[videoCount].type;
             if (vtype == "2") {
-                $('#rate-bar').fadeIn(100, function () {
-                    $('#rate-bar').css("display", "block")
-                });
-                // $('#rate-bar').css("display", "block")
+                $('#rate-bar').css("display", "block");
+            }else{
+                $('#rate-bar').css("display", "none");
             }
             // play.drawImages("/static/images/end.jpg");
 
@@ -1478,8 +1481,8 @@ var plugin = function () {
     };
 
     window.addEventListener("load", play.init);
-    window.addEventListener("load", play.elmeEvent);
-    window.addEventListener("load", play.playEvent);
+    // window.addEventListener("load", play.elmeEvent);
+    // window.addEventListener("load", play.playEvent);
     return {videoCount: videoCount};
 }();
 
