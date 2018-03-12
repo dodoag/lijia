@@ -206,6 +206,7 @@ var plugin = function () {
     //播放器控制事件
     play.playEvent = function () {
 
+        console.log("playEvent")
         //预加载事件
         play.media.addEventListener("progress", function () {
 
@@ -294,7 +295,6 @@ var plugin = function () {
 
         //媒体自带播放事件
         play.media.addEventListener("play", function () {
-
             play.func_frame();
 
             play.isPlay = true;
@@ -341,8 +341,7 @@ var plugin = function () {
                 }, "json");
             }
             videoCount++;
-            console.log('已结束-' + videoCount);
-            if (videoCount < 2) {
+            if (videoCount < videoT.length) {
                 $("#faceMedia").attr({"src": videoT[videoCount].path});
                 play.init();
                 play.media.play();
@@ -350,9 +349,14 @@ var plugin = function () {
                 videoCount = 0;
                 $("#faceMedia").attr({"src": videoT[videoCount].path});
                 play.init();
-                // play.media.pause();
             }
-
+            vtype = videoT[videoCount].type;
+            if (vtype == "2") {
+                $('#rate-bar').fadeIn(100, function () {
+                    $('#rate-bar').css("display", "block")
+                });
+                // $('#rate-bar').css("display", "block")
+            }
             // play.drawImages("/static/images/end.jpg");
 
             $('.adshow').fadeOut(100, function () {
@@ -365,7 +369,6 @@ var plugin = function () {
 
         //播放时间被改变
         play.media.addEventListener("timeupdate", function () {
-
             var _currT = play.media.currentTime,//获取媒体播放的当前时间
 
                 _totalT = play.media.duration,//获取媒体的总时长
