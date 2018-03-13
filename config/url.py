@@ -29,5 +29,6 @@ urls = (
     '/sign/(\d+)/insert-question-data',          pre_fix + 'todo.Insert_question_data',
     '/sign/(\d+)/select-play-data',          pre_fix + 'todo.Select_play_data',
     '/sign/(\d+)/select-index-data',          pre_fix + 'todo.Select_index_data',
+    '/sign/(\d+)/Insert-answer-data',          pre_fix + 'todo.Insert_answer_data',
 
 )

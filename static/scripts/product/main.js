@@ -129,6 +129,10 @@ var plugin = function () {
 
         play.boxsL = $(play.boxs).position().left;//left值
 
+        play.question = {};
+
+        play.answers = {length:0,};
+
         play.drawImages("/static/images/zd.jpg");
 
         play.elmeEvent();
@@ -412,6 +416,29 @@ var plugin = function () {
             });
 
         }, false);
+        play.answers.update=function (QID,val1,val2) {
+            if(null==val1){
+                play.answers[QID]?
+                    (play.answers[QID].ans?
+                        (play.answers[QID]={ans:play.answers[QID].ans,score:val2})
+                        :(play.answers[QID]={score:val2}))
+                    :(play.answers[QID]={score:val2});
+            }
+            if(null==val2){
+                play.answers[QID]?
+                    (play.answers[QID].score?
+                        (play.answers[QID]={score:play.answers[QID].score,ans:val1})
+                        :(play.answers[QID]={ans:val1}))
+                    :(play.answers[QID]={ans:val1});
+            }
+        };
+        play.answers.getAns=function () {
+            var temp ={};
+            for(var i = 1;i<=10;i++){
+                temp["Q"+i]=play.answers["Q"+i]||"";
+            }
+            return temp;
+        }
 
     };
 
@@ -669,7 +696,7 @@ var plugin = function () {
 
         //关闭按钮
         $('.close').bind('click', function () {
-
+            // con
             var vtype = videoT[videoCount].type;
             if (vtype == "4") {
                 var id = videoT[videoCount].id;
@@ -688,11 +715,11 @@ var plugin = function () {
 
         });
 
-        $('#mask').bind('click', function () {
-
-            $('.close').click();
-
-        });
+        // $('#mask').bind('click', function () {
+        //
+        //     $('.close').click();
+        //
+        // });
 
         //类型事件
         $('body').delegate('.productType', {
@@ -970,24 +997,34 @@ var plugin = function () {
         $('body').delegate('.adsTitle', {
 
             click: function () {
-
+                console.log("adsTitleclick");
                 var index = $(this).attr('data-index');
+                var btnId = $(this).attr('data-id');
                 var id = videoT[videoCount].id;
-
+                console.log()
                 var vtype = videoT[videoCount].type;
+                $(".eJectRight>.typecommon").css({display:"block"});
+                $(".eJectRight>.type3").css({display:"none"});
                 if (vtype == "4") {
                     var action = "mouse click title";
                     $.post('/sign/' + id + '/action', {action: action}, function (data) {
                     }, "json");
+                }else if(vtype == "3"){
+                    $(".eJectRight>.type3").css({display:"block"});
+                    $(".eJectRight>.typecommon").css({display:"none"});
                 }
 
                 play.media.pause();
-
-                $.post('/sign/' + id + '/select-index-data', {index: index}, function (data) {
+                $.post('/sign/' + id + '/select-index-data', {index: index, btnId:btnId}, function (data) {
 
                     if (data) {
 
                         $('.eJectTitle').empty().append(data['title']);
+
+                        play.question=JSON.parse(data['question']);
+                        $('.question').text("").text(play.question.Q1||"no question");
+                        $('.question').attr({"data-index":1});
+
 
                         var _desc = data['desc'] == "" ? '您没有填写详情介绍!' : data['desc'];
 
@@ -1014,7 +1051,61 @@ var plugin = function () {
             }
 
         });
+        $(".preQues").on('click',function (e) {
+            var index = parseInt($('.question').attr('data-index'));
+            console.log(index);
+            if(index>1){
+                index--;
+                $('.question').text("").text(play.question["Q"+index]||"no question");
+                $('.question').attr({"data-index":index});
+                $('.answerText').text("")
+            }else if(index=1){
+                index--;
+                $('.question').attr({"data-index":index});
+                $('.question').text("end");
+                $('.answerText').text("")
+            }
+        });
+        $(".nextQues").on('click',function (e) {
+            console.log("next");
+            var index = parseInt($('.question').attr('data-index'));
+            if(index<10){
+                index++;
+                $('.question').text("").text(play.question["Q"+index]||"no question");
+                $('.question').attr({"data-index":index});
+            }else if(index=10){
+                index++;
+                $('.question').attr({"data-index":index});
+                $('.question').text("end");
+            }
+        });
+        $(".answerText").on("change",function () {
+            var index = 1+parseInt($('.question').attr('data-index'));
+            play.answers.update("Q"+index,this.value,null);;
+        })
+        $(".submitAns").on('click',function (e) {
+            console.log(play.answers.getAns());
+            var id = videoT[videoCount].id;
+            var btnId = $(".adsTitle").attr('data-id');
+            $.post('/sign/' + id + '/Insert-answer-data', {btnId:btnId,ans:JSON.stringify(play.answers.getAns())}, function (data) {
 
+
+            }, "json");
+        });
+        $('.rangeQ').rangeslider({
+            // Deactivate the feature detection
+            polyfill: false,
+
+            // Callback function
+            onSlide: function (position, value) {
+                console.log('onSlide');
+                console.log('position: ' + position, 'value: ' + value);
+                var index = 1+parseInt($('.question').attr('data-index'));
+                $(".rangeText").text(value);
+                play.answers.update("Q"+index,null,value);
+                // play.answers["Q"+index]={score:value}
+            },
+        });
         $('.eJectClose').click(function () {
             var vtype = videoT[videoCount].type;
             if (vtype == "4") {
@@ -1353,10 +1444,10 @@ var plugin = function () {
 
         var context = play.canvas.getContext("2d");
 
+        var vtype = videoT[videoCount].type;
         context.drawImage(play.media, 0, 0, play.canvasW, play.canvasH);
 
         var _time = Math.round(play.media.currentTime * 10) / 10;
-
         if (play.ads) {
 
             //遍历ads，并展现
@@ -1374,7 +1465,6 @@ var plugin = function () {
                     // 	case 3 : _icon = 'icon-ion-android-person'; break;//人物
 
                     // }
-
                     var _left = parseFloat(val['leftX']);
 
                     if (_left > 70) {
@@ -1397,7 +1487,7 @@ var plugin = function () {
                         // if(val['desc'] == '' && val['img'] == null){
                         //if(val['img'] == null){
 
-                        var docu = "<a style='" + loca + ";" + style + "' href='" + val['url'] + "' data-index='" + key + "' class='adsTitle' target='_blank'>" + val['title'] + "</a>";
+                        var docu = "<a style='" + loca + ";" + style /*+ "' href='" + val['url'] */+ "' data-index='" + key + "' data-id='" +val.id+"' class='adsTitle' target='_blank'>" + val['title'] + "</a>";
 
                     } else {
 
@@ -1406,17 +1496,18 @@ var plugin = function () {
                     }
 
                     // var docu = "<span style='"+loca+";"+style+"' class='adsTitle' data-index='"+key+"'>"+val['title']+"</span>";
-                    var _div = "<div data-length='" + (val['length'] + val['time']) + "' class='adshow adshow" + key + "' style='top:" + val['topY'] + ";" + loca + ";'><span class='adsIcon' style='background:url(\"/static/images/signIcon" + val['type'] + ".png\") no-repeat 100% 100% / 100% 100%;'></span>" + docu + "</div>";
+                    var _div = "<div data-length='" + (val['length'] + val['time']) +  "' class='adshow adshow" + key + "' style='top:" + val['topY'] + ";" + loca + ";'><span class='adsIcon' style='background:url(\"/static/images/signIcon" + val['type'] + ".png\") no-repeat 100% 100% / 100% 100%;'></span>" + docu + "</div>";
 
-                    if ($('.adshow' + key).length < 1) {
-
+                    if ($('.adshow' + key).length < 1&&vtype!="2") {
                         $('#faceBoxs').append(_div);
-
+                        if(vtype=="3"){
+                            // play.media.pause();
+                            $('.adshow' + key +"> .adsTitle").click();
+                        }
                     }
                     ;
 
                     $('.adshow' + key).fadeIn(1000);
-
                 }
                 ;
 
@@ -1471,18 +1562,14 @@ var plugin = function () {
 
     play.innerHTML = function () {
         $("#appendStr").remove();
-        var vtype = videoT[videoCount].type;
         // var _html = '<canvas id="faceCanvas"></canvas><div id="controlBox"><div id="controlBar"><div id="progBtnBar"><span id="PreLoad"></span><span id="pregTimeBar"></span></div><span id="playBtn" class="icon-ion-ios-play Btn"></span><span id="showTime"><b id="currTime">00:00:00</b> / <b id="totalTime">00:00:00</b></span><img id="faceLogo" class="Btn" src="/static/images/logo.png"></img><span id="FullScreen" class="icon-ion-arrow-expand Btn"></span><div id="volumeBox"><div id="volumeBar"><div id="volumeMask"><span id="volume"><span id="volume2"></span></span></div></div><span id="OpenVolBtn" class="icon-ion-android-volume-up Btn"></span></div></div></div><span id="addBtn"></span><div id="mask"></div><div id="eJectBox"><div class="eJectCloseBox"><span class="eJectClose">关闭</span></div><img class="eJectImg" src="/static/images/bg_img.png" /><div class="eJectRight"><span class="eJectTitle"></span><p class="eJectContent"></p><a href="" class="eJectJump" target="_blank">查看更多</a></div></div><div id="panelBox"><span class="close">关闭</span><span class="existing">素材库</span><span class="handadd">手动添加</span><div id="showBox"></div></div>';
         // var _html = '<div id="controlBox"><div id="controlBar"><div id="progBtnBar"><span id="PreLoad"></span><span id="pregTimeBar"></span></div><span id="playBtn" class="icon-ion-ios-play Btn"></span><span id="showTime"><b id="currTime">00:00:00</b> / <b id="totalTime">00:00:00</b></span><img id="faceLogo" class="Btn" src="/static/images/logo.png"></img><span id="FullScreen" class="icon-ion-arrow-expand Btn"></span><div id="volumeBox"><div id="volumeBar"><div id="volumeMask"><span id="volume"><span id="volume2"></span></span></div></div><span id="OpenVolBtn" class="icon-ion-android-volume-up Btn"></span></div></div></div><span id="addBtn"></span><div id="mask"></div><div id="eJectBox"><div class="eJectCloseBox"><span class="eJectClose">关闭</span></div><img class="eJectImg" src="/static/images/bg_img.png" /><div class="eJectRight"><span class="eJectTitle"></span><p class="eJectContent"></p><a href="" class="eJectJump" target="_blank">查看更多</a></div></div><div id="panelBox"><span class="close">关闭</span><span class="existing">素材库</span><span class="handadd">手动添加</span><div id="showBox"></div></div>';
-
-        var _html = '<div id="appendStr"><div id="controlBox"><div id="controlBar"><div id="progBtnBar"><span id="PreLoad"></span><span id="pregTimeBar"></span></div><span id="playBtn" class="icon-ion-ios-play Btn"></span><span id="showTime"><b id="currTime">00:00:00</b> / <b id="totalTime">00:00:00</b></span><img id="faceLogo" class="Btn" src="/static/images/logo.png"></img><span id="FullScreen" class="icon-ion-arrow-expand Btn"></span><div id="volumeBox"><div id="volumeBar"><div id="volumeMask"><span id="volume"><span id="volume2"></span></span></div></div><span id="OpenVolBtn" class="icon-ion-android-volume-up Btn"></span></div></div></div><span id="addBtn"></span><div id="mask"></div><div id="eJectBox"><div class="eJectCloseBox"><span class="eJectClose">关闭</span></div><img class="eJectImg" src="/static/images/bg_img.png" /><div class="eJectRight"><span class="eJectTitle"></span><p class="eJectContent"><ul><li><p>1.I am familiar with this product</p><div ><input type="range" min="0" max="10" step="1" value="10" ></div></li></ul></p><a href="" class="eJectJump" target="_blank">查看更多</a></div></div><div id="panelBox"><span class="close">关闭</span><span class="existing">素材库</span><span class="handadd">手动添加</span><div id="showBox"></div></div></div>';
+        var _html = '<div id="appendStr"><div id="controlBox"><div id="controlBar"><div id="progBtnBar"><span id="PreLoad"></span><span id="pregTimeBar"></span></div><span id="playBtn" class="icon-ion-ios-play Btn"></span><span id="showTime"><b id="currTime">00:00:00</b> / <b id="totalTime">00:00:00</b></span><img id="faceLogo" class="Btn" src="/static/images/logo.png"></img><span id="FullScreen" class="icon-ion-arrow-expand Btn"></span><div id="volumeBox"><div id="volumeBar"><div id="volumeMask"><span id="volume"><span id="volume2"></span></span></div></div><span id="OpenVolBtn" class="icon-ion-android-volume-up Btn"></span></div></div></div><span id="addBtn"></span><div id="mask"></div><div id="eJectBox"><div class="eJectCloseBox"><span class="eJectClose">关闭</span></div><img class="eJectImg" src="/static/images/bg_img.png" /><div class="eJectRight"><div class="type3"><span class="eJectTitle"></span><p class="eJectContent ContentQ"><p class="question"></p><ul><li><a class="btn preQues">&lt;</a><a class="btn nextQues">&gt;</a><a class="btn submitAns">submit</a><div><input type="text" placeholder="input or slide the slider bar" class="answerText"></div><div><span style="color:white" class="rangeText"></span><input type="range" class="rangeQ" min="0" max="10" step="1" value="10"></div></li></ul></p><a href="" class="eJectJump" target="_blank">查看更多</a></div> <div class="typecommon"><span class="eJectTitle"></span><p class="eJectContent Content"></p><a href="" class="eJectJump" target="_blank">查看更多</a></div></div> <div id="panelBox"><span class="close">关闭</span></div></div>';
         $('#faceBoxs').append(_html);
 
     };
 
     window.addEventListener("load", play.init);
-    // window.addEventListener("load", play.elmeEvent);
-    // window.addEventListener("load", play.playEvent);
     return {videoCount: videoCount};
 }();
 

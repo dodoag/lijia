@@ -20,6 +20,7 @@ score = 'score'
 action = 'action'
 playdb = 'play'
 questiondb = 'question'
+answerdb = 'answer'
 
 session = web.config._session
 
@@ -33,6 +34,13 @@ def get_by_id(id):
 
 def get_plays_by_id(id):
     s = db.select(playdb, where='vid=$id', vars=locals())
+    if not s:
+        return False
+    return s
+
+
+def get_questions_by_id(id, btnId):
+    s = db.select(questiondb, where='vid=$id and btnId=$btnId', vars=locals())
     if not s:
         return False
     return s
@@ -256,27 +264,49 @@ class Select_play_data:
 class Select_index_data:
     def POST(self, id):
         plays = get_plays_by_id(id)
-        play = web.input()
-        print play
-        ind = int(play['index'])
-
+        parm = web.input()
+        print parm
+        ind = int(parm['index'])
+        btnId = parm['btnId']
+        questions = get_questions_by_id(id, btnId)
+        print questions
         if not plays:
             return json.dumps([])
-
         plays = list(plays)
-        for p in plays:
-            p['topY'] = '%.14f%%' % float(p['topY'])
-            p['leftX'] = '%.14f%%' % float(p['leftX'])
-            p['url'] = 'http://%s' % p['url']
-            p['desc'] = p['des']
-
-        result = json.dumps(plays[ind])
-        print result
+        p = plays[ind]
+        # for p in plays:
+        p['topY'] = '%.14f%%' % float(p['topY'])
+        p['leftX'] = '%.14f%%' % float(p['leftX'])
+        p['url'] = 'http://%s' % p['url']
+        p['desc'] = p['des']
+        if questions:
+            p['question'] = json.dumps(list(questions)[0])
+        else:
+            p['question'] = json.dumps([])
+        print p
+        result = json.dumps(p)
         if plays:
             return result
         else:
             return json.dumps([])
 
+
+class Insert_answer_data:
+    def POST(self, id):
+        parm = web.input()
+        print parm
+        vid = int(id)
+        btnId = parm['btnId']
+        uid = session.get('uid', 0)
+        ans = json.loads(parm["ans"])
+        result = db.insert(answerdb, uid=uid, vid=vid, btnId=btnId, a2Q1=json.dumps(ans["Q1"]),
+                   a2Q2=json.dumps(ans["Q2"]), a2Q3=json.dumps(ans["Q3"]), a2Q4=json.dumps(ans["Q4"]),
+                   a2Q5=json.dumps(ans["Q5"]), a2Q6=json.dumps(ans["Q6"]), a2Q7=json.dumps(ans["Q7"]),
+                   a2Q8=json.dumps(ans["Q8"]), a2Q9=json.dumps(ans["Q9"]), a2Q10=json.dumps(ans["Q10"]))
+        if result:
+            return 'true'
+        else:
+            return 'false'
 
 class Clear:
     def POST(self, id):

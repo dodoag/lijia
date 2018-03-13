@@ -117,7 +117,6 @@ li{list-style:none;}
 .eJectContent{
         color: #fff;
         font-size: 12px;
-        height: 150px;
         line-height: 23px;
         margin-bottom: 10px;
         margin-top: 5px;
@@ -127,7 +126,12 @@ li{list-style:none;}
         text-align: left;
         width: calc(100% - 10px);
 }
-
+.Content{
+        height: 150px;
+}
+.ContentQ{
+        height: 0px;
+}
 .eJectJump{
         background: #5088ff none repeat scroll 0 0;
         border-radius: 5px;
@@ -367,6 +371,21 @@ li{list-style:none;}
         left:0;
         text-align:center;
         overflow:hidden;
+}
+.question{
+        height: auto;
+        word-wrap:break-word;
+        word-break:break-all;
+        color: #fff;
+        font-size: 12px;
+        line-height: 23px;
+        margin-bottom: 10px;
+        margin-top: 5px;
+        overflow: hidden;
+        padding-right: 10px;
+        position: relative;
+        text-align: left;
+        width: calc(100% - 10px);
 }
 .big{
         color:red;
