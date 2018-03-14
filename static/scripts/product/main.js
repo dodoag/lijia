@@ -131,8 +131,11 @@ var plugin = function () {
 
         play.question = {};
 
-        play.answers = {length:0,};
+        // play.answers = {length:0};
 
+        play.answers = new Array();
+
+        play.fn= new Object();
         play.drawImages("/static/images/zd.jpg");
 
         play.elmeEvent();
@@ -416,7 +419,7 @@ var plugin = function () {
             });
 
         }, false);
-        play.answers.update=function (QID,val1,val2) {
+        play.fn.updateAns=function (QID,val1,val2) {
             if(null==val1){
                 play.answers[QID]?
                     (play.answers[QID].ans?
@@ -432,14 +435,20 @@ var plugin = function () {
                     :(play.answers[QID]={ans:val1});
             }
         };
-        play.answers.getAns=function () {
+        play.fn.getAns=function () {
             var temp ={};
             for(var i = 1;i<=10;i++){
-                temp["Q"+i]=play.answers["Q"+i]||"";
+                temp["Q"+i]=play.answers[i]||"";
             }
             return temp;
         }
-
+        play.fn.getAnsLength=function () {
+            var length=0;
+            for(var i = 1;i<=10;i++){
+                play.answers[i]&&length++;
+            }
+            return length;
+        }
     };
 
     //其他元素事件注册
@@ -1001,7 +1010,6 @@ var plugin = function () {
                 var index = $(this).attr('data-index');
                 var btnId = $(this).attr('data-id');
                 var id = videoT[videoCount].id;
-                console.log()
                 var vtype = videoT[videoCount].type;
                 $(".eJectRight>.typecommon").css({display:"block"});
                 $(".eJectRight>.type3").css({display:"none"});
@@ -1022,9 +1030,14 @@ var plugin = function () {
                         $('.eJectTitle').empty().append(data['title']);
 
                         play.question=JSON.parse(data['question']);
+
+                        play.answers.splice(0,10);
+
                         $('.question').text("").text(play.question.Q1||"no question");
+
                         $('.question').attr({"data-index":1});
 
+                        $('.rangeQ').val(10).change();
 
                         var _desc = data['desc'] == "" ? '您没有填写详情介绍!' : data['desc'];
 
@@ -1052,22 +1065,37 @@ var plugin = function () {
 
         });
         $(".preQues").on('click',function (e) {
+            console.log(play.answers);
+            $(".answerText").css({display:"inline-block"});
+            $('.rangeslider').css({display:"block"});
+            $(".rangeText").css({display:"block"});
             var index = parseInt($('.question').attr('data-index'));
-            console.log(index);
             if(index>1){
                 index--;
                 $('.question').text("").text(play.question["Q"+index]||"no question");
                 $('.question').attr({"data-index":index});
-                $('.answerText').text("")
+
             }else if(index=1){
                 index--;
                 $('.question').attr({"data-index":index});
                 $('.question').text("end");
-                $('.answerText').text("")
+                $(".answerText").css({display:"none"});
+                $('.rangeslider').css({display:"none"});
+                $(".rangeText").css({display:"none"});
+            }
+            if(play.answers[index]){
+                $(".answerText").val(play.answers[index].ans);
+                $('.rangeQ').val(play.answers[index].score).change();
+            }else{
+                $('.rangeQ').val(10).change();
+                $(".answerText").val("");
             }
         });
         $(".nextQues").on('click',function (e) {
-            console.log("next");
+            console.log(play.answers);
+            $(".answerText").css({display:"inline-block"});
+            $('.rangeslider').css({display:"block"});
+            $(".rangeText").css({display:"block"});
             var index = parseInt($('.question').attr('data-index'));
             if(index<10){
                 index++;
@@ -1077,19 +1105,34 @@ var plugin = function () {
                 index++;
                 $('.question').attr({"data-index":index});
                 $('.question').text("end");
+                $(".answerText").css({display:"none"});
+                $('.rangeslider').css({display:"none"})
+                $(".rangeText").css({display:"none"});
+            }
+            if(play.answers[index]){
+                $(".answerText").val(play.answers[index].ans);
+                $('.rangeQ').val(play.answers[index].score).change();
+            }else{
+                $(".answerText").val("");
+                $('.rangeQ').val(10).change();
             }
         });
         $(".answerText").on("change",function () {
-            var index = 1+parseInt($('.question').attr('data-index'));
-            play.answers.update("Q"+index,this.value,null);;
-        })
+            var index = parseInt($('.question').attr('data-index'));
+            play.fn.updateAns(index,this.value,null);
+            if(play.fn.getAnsLength()==10){
+                $(".submitAns").click();
+            }
+        });
         $(".submitAns").on('click',function (e) {
-            console.log(play.answers.getAns());
+            console.log(play.fn.getAns());
+            $(".close").click();
             var id = videoT[videoCount].id;
             var btnId = $(".adsTitle").attr('data-id');
-            $.post('/sign/' + id + '/Insert-answer-data', {btnId:btnId,ans:JSON.stringify(play.answers.getAns())}, function (data) {
-
-
+            $.post('/sign/' + id + '/Insert-answer-data', {btnId:btnId,ans:JSON.stringify(play.fn.getAns())}, function (data) {
+                    // if(data){
+                    //     $(".close").click();
+                    // }
             }, "json");
         });
         $('.rangeQ').rangeslider({
@@ -1100,10 +1143,12 @@ var plugin = function () {
             onSlide: function (position, value) {
                 console.log('onSlide');
                 console.log('position: ' + position, 'value: ' + value);
-                var index = 1+parseInt($('.question').attr('data-index'));
+                var index = parseInt($('.question').attr('data-index'));
                 $(".rangeText").text(value);
-                play.answers.update("Q"+index,null,value);
-                // play.answers["Q"+index]={score:value}
+                play.fn.updateAns(index,null,value);
+                if(play.fn.getAnsLength()==10){
+                    $(".submitAns").click();
+                }
             },
         });
         $('.eJectClose').click(function () {
@@ -1564,7 +1609,7 @@ var plugin = function () {
         $("#appendStr").remove();
         // var _html = '<canvas id="faceCanvas"></canvas><div id="controlBox"><div id="controlBar"><div id="progBtnBar"><span id="PreLoad"></span><span id="pregTimeBar"></span></div><span id="playBtn" class="icon-ion-ios-play Btn"></span><span id="showTime"><b id="currTime">00:00:00</b> / <b id="totalTime">00:00:00</b></span><img id="faceLogo" class="Btn" src="/static/images/logo.png"></img><span id="FullScreen" class="icon-ion-arrow-expand Btn"></span><div id="volumeBox"><div id="volumeBar"><div id="volumeMask"><span id="volume"><span id="volume2"></span></span></div></div><span id="OpenVolBtn" class="icon-ion-android-volume-up Btn"></span></div></div></div><span id="addBtn"></span><div id="mask"></div><div id="eJectBox"><div class="eJectCloseBox"><span class="eJectClose">关闭</span></div><img class="eJectImg" src="/static/images/bg_img.png" /><div class="eJectRight"><span class="eJectTitle"></span><p class="eJectContent"></p><a href="" class="eJectJump" target="_blank">查看更多</a></div></div><div id="panelBox"><span class="close">关闭</span><span class="existing">素材库</span><span class="handadd">手动添加</span><div id="showBox"></div></div>';
         // var _html = '<div id="controlBox"><div id="controlBar"><div id="progBtnBar"><span id="PreLoad"></span><span id="pregTimeBar"></span></div><span id="playBtn" class="icon-ion-ios-play Btn"></span><span id="showTime"><b id="currTime">00:00:00</b> / <b id="totalTime">00:00:00</b></span><img id="faceLogo" class="Btn" src="/static/images/logo.png"></img><span id="FullScreen" class="icon-ion-arrow-expand Btn"></span><div id="volumeBox"><div id="volumeBar"><div id="volumeMask"><span id="volume"><span id="volume2"></span></span></div></div><span id="OpenVolBtn" class="icon-ion-android-volume-up Btn"></span></div></div></div><span id="addBtn"></span><div id="mask"></div><div id="eJectBox"><div class="eJectCloseBox"><span class="eJectClose">关闭</span></div><img class="eJectImg" src="/static/images/bg_img.png" /><div class="eJectRight"><span class="eJectTitle"></span><p class="eJectContent"></p><a href="" class="eJectJump" target="_blank">查看更多</a></div></div><div id="panelBox"><span class="close">关闭</span><span class="existing">素材库</span><span class="handadd">手动添加</span><div id="showBox"></div></div>';
-        var _html = '<div id="appendStr"><div id="controlBox"><div id="controlBar"><div id="progBtnBar"><span id="PreLoad"></span><span id="pregTimeBar"></span></div><span id="playBtn" class="icon-ion-ios-play Btn"></span><span id="showTime"><b id="currTime">00:00:00</b> / <b id="totalTime">00:00:00</b></span><img id="faceLogo" class="Btn" src="/static/images/logo.png"></img><span id="FullScreen" class="icon-ion-arrow-expand Btn"></span><div id="volumeBox"><div id="volumeBar"><div id="volumeMask"><span id="volume"><span id="volume2"></span></span></div></div><span id="OpenVolBtn" class="icon-ion-android-volume-up Btn"></span></div></div></div><span id="addBtn"></span><div id="mask"></div><div id="eJectBox"><div class="eJectCloseBox"><span class="eJectClose">关闭</span></div><img class="eJectImg" src="/static/images/bg_img.png" /><div class="eJectRight"><div class="type3"><span class="eJectTitle"></span><p class="eJectContent ContentQ"><p class="question"></p><ul><li><a class="btn preQues">&lt;</a><a class="btn nextQues">&gt;</a><a class="btn submitAns">submit</a><div><input type="text" placeholder="input or slide the slider bar" class="answerText"></div><div><span style="color:white" class="rangeText"></span><input type="range" class="rangeQ" min="0" max="10" step="1" value="10"></div></li></ul></p><a href="" class="eJectJump" target="_blank">查看更多</a></div> <div class="typecommon"><span class="eJectTitle"></span><p class="eJectContent Content"></p><a href="" class="eJectJump" target="_blank">查看更多</a></div></div> <div id="panelBox"><span class="close">关闭</span></div></div>';
+        var _html = '<div id="appendStr"><div id="controlBox"><div id="controlBar"><div id="progBtnBar"><span id="PreLoad"></span><span id="pregTimeBar"></span></div><span id="playBtn" class="icon-ion-ios-play Btn"></span><span id="showTime"><b id="currTime">00:00:00</b> / <b id="totalTime">00:00:00</b></span><img id="faceLogo" class="Btn" src="/static/images/logo.png"></img><span id="FullScreen" class="icon-ion-arrow-expand Btn"></span><div id="volumeBox"><div id="volumeBar"><div id="volumeMask"><span id="volume"><span id="volume2"></span></span></div></div><span id="OpenVolBtn" class="icon-ion-android-volume-up Btn"></span></div></div></div><span id="addBtn"></span><div id="mask"></div><div id="eJectBox"><div class="eJectCloseBox"><!--<span class="eJectClose">关闭</span>--></div><img class="eJectImg" src="/static/images/bg_img.png" /><div class="eJectRight"><div class="type3"><span class="eJectTitle"></span><p class="eJectContent ContentQ"><p class="question"></p><ul><li><a class="btn preQues">&lt;</a><a class="btn nextQues">&gt;</a><a class="btn submitAns" style="display: none;">submit</a><div><input type="text" placeholder="input or slide the slider bar" class="answerText"></div><div><span style="color:white" class="rangeText"></span><input type="range" class="rangeQ" min="0" max="10" step="1" value="10"></div></li></ul></p><a href="" class="eJectJump" target="_blank">查看更多</a></div> <div class="typecommon"><span class="eJectTitle"></span><p class="eJectContent Content"></p><a href="" class="eJectJump" target="_blank">查看更多</a></div></div> <div id="panelBox"><span class="close">关闭</span></div></div>';
         $('#faceBoxs').append(_html);
 
     };

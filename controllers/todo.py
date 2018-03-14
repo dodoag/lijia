@@ -299,6 +299,7 @@ class Insert_answer_data:
         btnId = parm['btnId']
         uid = session.get('uid', 0)
         ans = json.loads(parm["ans"])
+        print ans
         result = db.insert(answerdb, uid=uid, vid=vid, btnId=btnId, a2Q1=json.dumps(ans["Q1"]),
                    a2Q2=json.dumps(ans["Q2"]), a2Q3=json.dumps(ans["Q3"]), a2Q4=json.dumps(ans["Q4"]),
                    a2Q5=json.dumps(ans["Q5"]), a2Q6=json.dumps(ans["Q6"]), a2Q7=json.dumps(ans["Q7"]),
