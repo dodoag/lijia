@@ -162,7 +162,7 @@ var plugin = function () {
 
                 play.getData();
             }
-        });
+        },500);
     };
 
     //获取已经标记的广告列表
@@ -351,10 +351,22 @@ var plugin = function () {
             }
             videoCount++;
             if (videoCount < videoT.length) {
+                var countdown=10;
+                $(".rights").empty()
+                $(".rights").slideDown(200);
+                var myCountdown = setInterval(function () {
+                    if (countdown == 0) {
+                        $(".rights").slideUp(200);
+                        clearInterval(myCountdown);
+                        play.media.play();
+                    }else{
+                        $(".rights").empty().append("<p style='text-align: center;padding-top:50px;font-size: 100px;'>"+countdown+"</p>");
+                        countdown--;
+                    }
+                },1000);
                 $("#faceMedia").attr({"src": videoT[videoCount].path});
                 play.media=$('#faceMedia').get(0);
                 play.getVideo();
-                play.media.play();
             } else {
                 videoCount = 0;
                 $("#faceMedia").attr({"src": videoT[videoCount].path});
@@ -1609,7 +1621,7 @@ var plugin = function () {
         $("#appendStr").remove();
         // var _html = '<canvas id="faceCanvas"></canvas><div id="controlBox"><div id="controlBar"><div id="progBtnBar"><span id="PreLoad"></span><span id="pregTimeBar"></span></div><span id="playBtn" class="icon-ion-ios-play Btn"></span><span id="showTime"><b id="currTime">00:00:00</b> / <b id="totalTime">00:00:00</b></span><img id="faceLogo" class="Btn" src="/static/images/logo.png"></img><span id="FullScreen" class="icon-ion-arrow-expand Btn"></span><div id="volumeBox"><div id="volumeBar"><div id="volumeMask"><span id="volume"><span id="volume2"></span></span></div></div><span id="OpenVolBtn" class="icon-ion-android-volume-up Btn"></span></div></div></div><span id="addBtn"></span><div id="mask"></div><div id="eJectBox"><div class="eJectCloseBox"><span class="eJectClose">关闭</span></div><img class="eJectImg" src="/static/images/bg_img.png" /><div class="eJectRight"><span class="eJectTitle"></span><p class="eJectContent"></p><a href="" class="eJectJump" target="_blank">查看更多</a></div></div><div id="panelBox"><span class="close">关闭</span><span class="existing">素材库</span><span class="handadd">手动添加</span><div id="showBox"></div></div>';
         // var _html = '<div id="controlBox"><div id="controlBar"><div id="progBtnBar"><span id="PreLoad"></span><span id="pregTimeBar"></span></div><span id="playBtn" class="icon-ion-ios-play Btn"></span><span id="showTime"><b id="currTime">00:00:00</b> / <b id="totalTime">00:00:00</b></span><img id="faceLogo" class="Btn" src="/static/images/logo.png"></img><span id="FullScreen" class="icon-ion-arrow-expand Btn"></span><div id="volumeBox"><div id="volumeBar"><div id="volumeMask"><span id="volume"><span id="volume2"></span></span></div></div><span id="OpenVolBtn" class="icon-ion-android-volume-up Btn"></span></div></div></div><span id="addBtn"></span><div id="mask"></div><div id="eJectBox"><div class="eJectCloseBox"><span class="eJectClose">关闭</span></div><img class="eJectImg" src="/static/images/bg_img.png" /><div class="eJectRight"><span class="eJectTitle"></span><p class="eJectContent"></p><a href="" class="eJectJump" target="_blank">查看更多</a></div></div><div id="panelBox"><span class="close">关闭</span><span class="existing">素材库</span><span class="handadd">手动添加</span><div id="showBox"></div></div>';
-        var _html = '<div id="appendStr"><div id="controlBox"><div id="controlBar"><div id="progBtnBar"><span id="PreLoad"></span><span id="pregTimeBar"></span></div><span id="playBtn" class="icon-ion-ios-play Btn"></span><span id="showTime"><b id="currTime">00:00:00</b> / <b id="totalTime">00:00:00</b></span><img id="faceLogo" class="Btn" src="/static/images/logo.png"></img><span id="FullScreen" class="icon-ion-arrow-expand Btn"></span><div id="volumeBox"><div id="volumeBar"><div id="volumeMask"><span id="volume"><span id="volume2"></span></span></div></div><span id="OpenVolBtn" class="icon-ion-android-volume-up Btn"></span></div></div></div><span id="addBtn"></span><div id="mask"></div><div id="eJectBox"><div class="eJectCloseBox"><!--<span class="eJectClose">关闭</span>--></div><img class="eJectImg" src="/static/images/bg_img.png" /><div class="eJectRight"><div class="type3"><span class="eJectTitle"></span><p class="eJectContent ContentQ"><p class="question"></p><ul><li><a class="btn preQues">&lt;</a><a class="btn nextQues">&gt;</a><a class="btn submitAns" style="display: none;">submit</a><div><input type="text" placeholder="input or slide the slider bar" class="answerText"></div><div><span style="color:white" class="rangeText"></span><input type="range" class="rangeQ" min="0" max="10" step="1" value="10"></div></li></ul></p><a href="" class="eJectJump" target="_blank">查看更多</a></div> <div class="typecommon"><span class="eJectTitle"></span><p class="eJectContent Content"></p><a href="" class="eJectJump" target="_blank">查看更多</a></div></div> <div id="panelBox"><span class="close">关闭</span></div></div>';
+        var _html = '<div id="appendStr"><div id="controlBox"><div id="controlBar"><div id="progBtnBar"><span id="PreLoad"></span><span id="pregTimeBar"></span></div><span id="playBtn" class="icon-ion-ios-play Btn"></span><span id="showTime"><b id="currTime">00:00:00</b> / <b id="totalTime">00:00:00</b></span><img id="faceLogo" class="Btn" src="/static/images/logo.png"></img><span id="FullScreen" class="icon-ion-arrow-expand Btn"></span><div id="volumeBox"><div id="volumeBar"><div id="volumeMask"><span id="volume"><span id="volume2"></span></span></div></div><span id="OpenVolBtn" class="icon-ion-android-volume-up Btn"></span></div></div></div><span id="addBtn"></span><div id="mask"></div><div id="eJectBox"><div class="eJectCloseBox"><!--<span class="eJectClose">关闭</span>--></div><img class="eJectImg" src="/static/images/bg_img.png" /><div class="eJectRight"><div class="type3"><span class="eJectTitle" style="text-align: center"></span><a class="btn preQues" style="float: left">&lt;</a><a class="btn nextQues" style="float: right">&gt;</a><p class="eJectContent ContentQ"><p class="question"></p><ul><li><a class="btn submitAns" style="display: none;">submit</a><div><input type="text" style="width: 95%" placeholder="input or slide the slider bar" class="answerText"></div><div><span style="color:white" class="rangeText"></span><input type="range" class="rangeQ" min="0" max="10" step="1" value="10"></div></li></ul></p><a href="" class="eJectJump" target="_blank">查看更多</a></div> <div class="typecommon"><span class="eJectTitle"></span><p class="eJectContent Content"></p><a href="" class="eJectJump" target="_blank">查看更多</a></div></div> <div id="panelBox"><span class="close">关闭</span></div></div>';
         $('#faceBoxs').append(_html);
 
     };
@@ -1619,7 +1631,10 @@ var plugin = function () {
 }();
 
 $(function () {
-
+    // $("#mask").fadeIn(200);
+    $(".rightConfirm").on("click",function () {
+        $(".rights").slideUp(200);
+    });
     $("#faceMedia").attr({"src": videoT[0].path});
 
     $('input[type="range"]').rangeslider({

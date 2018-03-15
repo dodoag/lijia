@@ -3,39 +3,57 @@ $def with(users,videos)
 $:render.header()
 
 <div class="main">
-    <form class="form-inline" action="/AddUser" method="post" name="form" enctype="multipart/form-data">
-        <div class="control-group">
-            <label class="control-label" for="username">username</label>
-            <div class="controls">
-                <input type="text" id="username" placeholder="username" name="username">
+    <div style="height: 280px">
+    <div style="height: 200px;
+     float: left;
+    margin: 20px;
+    display: inline-block;
+    padding: 10px 20px;
+    border: 1px solid #CCC;
+    border-radius: 5px;">
+        <form class="form-inline" action="/AddUser" method="post" name="form" enctype="multipart/form-data">
+            <div class="control-group">
+                <label class="control-label" for="username">username</label>
+                <div class="controls">
+                    <input type="text" id="username" placeholder="username" name="username">
+                </div>
             </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="inputPassword">Password</label>
-            <div class="controls">
-                <input type="password" id="inputPassword" placeholder="Password" name="pwd">
+            <div class="control-group">
+                <label class="control-label" for="inputPassword">Password</label>
+                <div class="controls">
+                    <input type="password" id="inputPassword" placeholder="Password" name="pwd">
+                </div>
             </div>
-        </div>
-        <div class="control-group">
-            <div class="controls">
-                <button type="submit" class="btn">submit</button>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn">submit</button>
+                </div>
             </div>
-        </div>
-    </form>
-    <hr>
-    <form class="form-inline" action="/AddUsers" method="post" name="form" enctype="multipart/form-data">
-        <div class="control-group">
-            <label class="control-label" for="userfile">choose userfile</label>
-            <div class="controls">
-                <input type="file" id="userfile" name="userfile">
+        </form>
+    </div>
+
+    <div style="margin: 20px;
+    display: inline-block;
+    padding: 10px 20px;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    height: 200px;
+    float: left;">
+        <form class="form-inline" action="/AddUsers" method="post" name="form" enctype="multipart/form-data">
+            <div class="control-group">
+                <label class="control-label" for="userfile">choose userfile</label>
+                <div class="controls">
+                    <input type="file" id="userfile" name="userfile">
+                </div>
             </div>
-        </div>
-        <div class="control-group">
-            <div class="controls">
-                <button type="submit" class="btn">submit</button>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn">submit</button>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
+    </div>
     <hr>
     <p>users</p>
     <div class="box todos">
